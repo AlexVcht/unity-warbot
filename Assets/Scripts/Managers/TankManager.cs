@@ -16,7 +16,6 @@ public class TankManager
 
     private TankMovement m_Movement;
     private TankShooting m_Shooting;
-    private TankGUI m_Score;
     private GameObject m_CanvasGameObject;
 
     public void Setup()

@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     private TankManager m_RoundWinner;
     private TankManager m_GameWinner;
     private GameObject[] targets;
+    private ScoreGUI scoreGUI;
 
     private void Start()
     {
@@ -30,6 +31,9 @@ public class GameManager : MonoBehaviour
 
         SpawnAllTargets();
         SpawnAllTanks();
+
+        SetScoreUI();
+
         SetCameraTargets();
 
         StartCoroutine(GameLoop());
@@ -65,6 +69,13 @@ public class GameManager : MonoBehaviour
             targets[i] = Instantiate(m_TargetPrefab, position, quaternion) as GameObject;
             targets[i].SetActive(true);
         }
+    }
+
+    private void SetScoreUI()
+    {
+        ScoreGUI scoreGui = GetComponent<ScoreGUI>();
+
+        scoreGui.m_Tanks = m_Tanks;
     }
 
     // On set la camera pour voir tank + targets
@@ -131,7 +142,6 @@ public class GameManager : MonoBehaviour
         while (!IsTargetsAlive())
         {
             RespawnTanksIfDead();
-
             yield return null;
         }
     }
