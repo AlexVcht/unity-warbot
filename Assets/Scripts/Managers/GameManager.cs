@@ -1,25 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
-//using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public int m_NumRoundsToWin = 5;        
-    public float m_StartDelay = 3f;         
-    public float m_EndDelay = 3f;           
-    public CameraControl m_CameraControl;   
-    public Text m_MessageText;              
-    public GameObject m_TankPrefab;         
-    public TankManager[] m_Tanks;           
+    public int m_NumRoundsToWin = 5;
+    public int m_NumTargets = 5;
+    public float m_StartDelay = 3f;
+    public float m_EndDelay = 3f;
+    public CameraControl m_CameraControl;
+    public Text m_MessageText;
+    public GameObject m_TankPrefab;
+    public GameObject m_TargetPrefab;
+    public TankManager[] m_Tanks;
 
 
-    private int m_RoundNumber;              
-    private WaitForSeconds m_StartWait;     
-    private WaitForSeconds m_EndWait;       
+    private int m_RoundNumber;
+    private WaitForSeconds m_StartWait;
+    private WaitForSeconds m_EndWait;
     private TankManager m_RoundWinner;
-    private TankManager m_GameWinner;       
+    private TankManager m_GameWinner;
+    private GameObject[] targets;
 
     private void Start()
     {
@@ -27,6 +29,7 @@ public class GameManager : MonoBehaviour
         m_EndWait = new WaitForSeconds(m_EndDelay);
 
         SpawnAllTanks();
+        SpawnAllTargets();
         SetCameraTargets();
 
         StartCoroutine(GameLoop());
@@ -38,23 +41,51 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < m_Tanks.Length; i++)
         {
             m_Tanks[i].m_Instance =
-                Instantiate(m_TankPrefab, m_Tanks[i].m_SpawnPoint.position, m_Tanks[i].m_SpawnPoint.rotation) as GameObject;
+                Instantiate(
+                    m_TankPrefab,
+                    m_Tanks[i].m_SpawnPoint.position,
+                    m_Tanks[i].m_SpawnPoint.rotation
+                ) as GameObject;
+
             m_Tanks[i].m_PlayerNumber = i + 1;
             m_Tanks[i].Setup();
         }
     }
 
+    private void SpawnAllTargets()
+    {
+        targets = new GameObject[m_NumTargets];
 
+        for (int i = 0; i < m_NumTargets; i++)
+        {
+            Vector3 position = new Vector3(Random.Range(-35.0f, 35.0f), 0f, Random.Range(-35.0f, 35.0f));
+            Quaternion quaternion = Quaternion.identity;
+
+            targets[i] = Instantiate(m_TargetPrefab, position, quaternion) as GameObject;
+            targets[i].SetActive(true);
+        }
+    }
+
+    // On set la camera pour voir tank + targets
     private void SetCameraTargets()
     {
-        Transform[] targets = new Transform[m_Tanks.Length];
+        int iterator = 0;
+        int size = m_Tanks.Length + m_NumTargets;
+        Transform[] tranformTargets = new Transform[size];
 
-        for (int i = 0; i < targets.Length; i++)
+        foreach (TankManager tank in m_Tanks)
         {
-            targets[i] = m_Tanks[i].m_Instance.transform;
+            tranformTargets[iterator] = tank.m_Instance.transform;
+            iterator++;
         }
 
-        m_CameraControl.m_Targets = targets;
+        foreach (GameObject target in targets)
+        {
+            tranformTargets[iterator] = target.transform;
+            iterator++;
+        }
+
+        m_CameraControl.m_Targets = tranformTargets;
     }
 
 
@@ -144,7 +175,7 @@ public class GameManager : MonoBehaviour
             if (m_Tanks[i].m_Instance.activeSelf)
                 return m_Tanks[i];
         }
-        
+
         return null;
     }
 

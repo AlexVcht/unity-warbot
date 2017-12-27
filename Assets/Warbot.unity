@@ -113,68 +113,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &198945137
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4645197268431176, guid: d4a803f405213ee45909c50bb71bcca9, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4645197268431176, guid: d4a803f405213ee45909c50bb71bcca9, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4645197268431176, guid: d4a803f405213ee45909c50bb71bcca9, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 2.24
-      objectReference: {fileID: 0}
-    - target: {fileID: 4645197268431176, guid: d4a803f405213ee45909c50bb71bcca9, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4645197268431176, guid: d4a803f405213ee45909c50bb71bcca9, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4645197268431176, guid: d4a803f405213ee45909c50bb71bcca9, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4645197268431176, guid: d4a803f405213ee45909c50bb71bcca9, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4645197268431176, guid: d4a803f405213ee45909c50bb71bcca9, type: 2}
-      propertyPath: m_RootOrder
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 224749335086580796, guid: d4a803f405213ee45909c50bb71bcca9,
-        type: 2}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224749335086580796, guid: d4a803f405213ee45909c50bb71bcca9,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114229042333737056, guid: d4a803f405213ee45909c50bb71bcca9,
-        type: 2}
-      propertyPath: m_FillImage
-      value: 
-      objectReference: {fileID: 837360424}
-    - target: {fileID: 114229042333737056, guid: d4a803f405213ee45909c50bb71bcca9,
-        type: 2}
-      propertyPath: m_ExplosionPrefab
-      value: 
-      objectReference: {fileID: 151086, guid: ee49a9a8678ecf8468eb488e1ac8d42b, type: 2}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: d4a803f405213ee45909c50bb71bcca9, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1001 &416318750
 Prefab:
   m_ObjectHideFlags: 0
@@ -404,12 +342,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &837360424 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114652737872831954, guid: d4a803f405213ee45909c50bb71bcca9,
-    type: 2}
-  m_PrefabInternal: {fileID: 198945137}
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &1086010526
 GameObject:
   m_ObjectHideFlags: 0
@@ -608,11 +540,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_NumRoundsToWin: 5
+  m_NumTargets: 5
   m_StartDelay: 3
   m_EndDelay: 3
   m_CameraControl: {fileID: 445117952}
   m_MessageText: {fileID: 1174213238}
   m_TankPrefab: {fileID: 1786049740999704, guid: f8d50493d80cddd4bae1dd895cba4a78,
+    type: 2}
+  m_TargetPrefab: {fileID: 1022700595506362, guid: d4a803f405213ee45909c50bb71bcca9,
     type: 2}
   m_Tanks:
   - m_PlayerColor: {r: 0.16470589, g: 0.39215684, b: 0.69803923, a: 0}
