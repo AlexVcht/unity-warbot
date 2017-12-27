@@ -3,17 +3,17 @@ using UnityEngine.UI;
 
 public class TargetHealth : MonoBehaviour
 {
-    public float m_StartingHealth = 1f;          
-    public Slider m_Slider;                        
-    public Image m_FillImage;                      
-    public Color m_FullHealthColor = Color.green;  
-    public Color m_ZeroHealthColor = Color.red;    
+    public float m_StartingHealth = 1f;
+    public Slider m_Slider;
+    public Image m_FillImage;
+    public Color m_FullHealthColor = Color.green;
+    public Color m_ZeroHealthColor = Color.red;
     public GameObject m_ExplosionPrefab;
-    
-    private AudioSource m_ExplosionAudio;          
-    private ParticleSystem m_ExplosionParticles;   
-    private float m_CurrentHealth;  
-    private bool m_Dead;            
+
+    private AudioSource m_ExplosionAudio;
+    private ParticleSystem m_ExplosionParticles;
+    private float m_CurrentHealth;
+    private bool m_Dead;
 
 
     private void Awake()
@@ -32,17 +32,17 @@ public class TargetHealth : MonoBehaviour
 
         SetHealthUI();
     }
- 
 
-    public void TakeDamage(float amount)
+
+    public void TakeDamage(float amount, TankManager tankInstance)
     {
-        // Adjust the tank's current health, update the UI based on the new health and check whether or not the tank is dead.
+        // Adjust the target's current health, update the UI based on the new health and check whether or not the tank is dead.
         m_CurrentHealth -= amount;
 
         SetHealthUI();
 
-        if(m_CurrentHealth <= 0f && !m_Dead)
-            OnDeath();
+        if (m_CurrentHealth <= 0f && !m_Dead)
+            OnDeath(tankInstance);
     }
 
 
@@ -55,10 +55,14 @@ public class TargetHealth : MonoBehaviour
     }
 
 
-    private void OnDeath()
+    private void OnDeath(TankManager tankInstance)
     {
-        // Play the effects for the death of the tank and deactivate it.
+        // Play the effects for the death of the target and deactivate it.
         m_Dead = true;
+
+        tankInstance.m_TargetsKilled++;
+
+        Debug.Log(tankInstance.m_TargetsKilled);
 
         m_ExplosionParticles.transform.position = transform.position;
         m_ExplosionParticles.gameObject.SetActive(true);

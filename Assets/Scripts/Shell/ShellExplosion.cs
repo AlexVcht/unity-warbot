@@ -9,7 +9,7 @@ public class ShellExplosion : MonoBehaviour
     public float m_ExplosionForce = 1000f;
     public float m_MaxLifeTime = 2f;
     public float m_ExplosionRadius = 5f;
-
+    public TankManager m_TankInstance;
 
     private void Start()
     {
@@ -43,7 +43,7 @@ public class ShellExplosion : MonoBehaviour
                 tankHealth.TakeDamage(damage);
             else if (targetHealth != null)
             {
-                targetHealth.TakeDamage(damage);
+                targetHealth.TakeDamage(damage, m_TankInstance);
             }
         }
 

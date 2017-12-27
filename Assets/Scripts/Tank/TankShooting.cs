@@ -13,8 +13,8 @@ public class TankShooting : MonoBehaviour
     public float m_MinLaunchForce = 15f; 
     public float m_MaxLaunchForce = 30f; 
     public float m_MaxChargeTime = 0.75f;
+    public TankManager m_TankInstance;
 
-    
     private string m_FireButton;         
     private float m_CurrentLaunchForce;  
     private float m_ChargeSpeed;         
@@ -80,6 +80,9 @@ public class TankShooting : MonoBehaviour
         Rigidbody shellInstance = Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation) as Rigidbody;
 
         shellInstance.velocity = m_CurrentLaunchForce * m_FireTransform.forward;
+
+        ShellExplosion shellExplosion = shellInstance.GetComponent<ShellExplosion>();
+        shellExplosion.m_TankInstance = m_TankInstance;
 
         m_ShootingAudio.clip = m_FireClip;
         m_ShootingAudio.Play();
