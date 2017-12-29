@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class TankMovement : MonoBehaviour
@@ -11,7 +12,7 @@ public class TankMovement : MonoBehaviour
     public AudioClip m_EngineDriving;
     public float m_PitchRange = 0.2f;
     public GameObject[] m_Targets;
-
+    public GameObject m_TargetToKill;
 
     private string m_MovementAxisName;
     private string m_TurnAxisName;
@@ -49,16 +50,16 @@ public class TankMovement : MonoBehaviour
         m_TurnAxisName = "Horizontal" + m_PlayerNumber;
 
         m_OriginalPitch = m_MovementAudio.pitch;
+
+        StartCoroutine(KillThemAll());
     }
 
     // Running every frame
     private void Update()
     {
         // Store the player's input and make sure the audio for the engine is playing.
-        m_MovementInputValue = Input.GetAxis(m_MovementAxisName);
-        m_TurnInputValue = Input.GetAxis(m_TurnAxisName);
-
-        KillThemAll();
+        //m_MovementInputValue = Input.GetAxis(m_MovementAxisName);
+        //m_TurnInputValue = Input.GetAxis(m_TurnAxisName);
 
         EngineAudio();
     }
@@ -93,47 +94,100 @@ public class TankMovement : MonoBehaviour
         Turn();*/
     }
 
-    private void KillThemAll()
+    private IEnumerator KillThemAll()
     {
-        // Pour chaque cible dans l'ordre, a changer !
-        foreach (GameObject target in m_Targets)
+        Debug.Log("Kill them all");
+
+        for (int i = 0; i < m_Targets.Length; i++)
         {
-            Move(target);
-            DetroyIt(target);
+            yield return StartCoroutine(FindTarget());
+            yield return StartCoroutine(KillIt());
         }
     }
 
-    private void Move(GameObject target)
+    private IEnumerator FindTarget()
     {
-        m_Rigidbody.transform.LookAt(target.transform);
+        Debug.Log("find target");
 
-        Vector3 distanceVector3 = m_Rigidbody.transform.position - target.transform.position;
+        foreach (GameObject target in m_Targets)
+        {
+            if (target.gameObject.activeSelf)
+                m_TargetToKill = target;
+            yield return new WaitForSeconds(0);
+        }
+
+        yield return new WaitForSeconds(0f);
+    }
+
+    private IEnumerator KillIt()
+    {
+        Debug.Log("Kill it : " + m_TargetToKill);
+
+        if (m_TargetToKill != null)
+        {
+            // Tant que la cible est en vie on va la détruire
+            while (m_TargetToKill.gameObject.activeSelf)
+            {
+                // On se déplace jusqu'a elle
+                yield return StartCoroutine(Move());
+                yield return StartCoroutine(DetroyIt());
+
+                yield return null;
+            }
+        }
+    }
+
+    private IEnumerator Move()
+    {
+        Debug.Log("Move");
+
+        m_Rigidbody.transform.LookAt(m_TargetToKill.transform);
+
+        Vector3 distanceVector3 = m_Rigidbody.transform.position - m_TargetToKill.transform.position;
         Vector3 movement = new Vector3();
 
         // On le met a la bonne distance
-        while (distanceVector3.magnitude > 50)
+        while (distanceVector3.magnitude > 15f)
         {
+            // On vérifie toujours si elle est en vie sinon ca sert a rien d'aller vers elle
+            if (!m_TargetToKill.gameObject.activeSelf)
+                StopCoroutine(Move());
+
             movement = transform.forward * m_MovementInputValue * m_Speed * Time.deltaTime;
 
             m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
 
-            distanceVector3 = m_Rigidbody.transform.position - target.transform.position;
+            distanceVector3 = m_Rigidbody.transform.position - m_TargetToKill.transform.position;
+
+            yield return null;
         }
     }
 
-    private void DetroyIt(GameObject target)
+    private IEnumerator DetroyIt()
     {
-        // On shoot
-        float launchForce = 15;
+        Debug.Log("Destoy it");
 
-        while (target.gameObject.activeSelf)
+        // Force minimum
+        float launchForce = 15f;
+
+        // Tant qu'elle est en vie on tire
+        while (m_TargetToKill.gameObject.activeSelf)
         {
-            launchForce = 15;
+            Debug.Log("Destoy it - shoot");
 
-            while (launchForce < 22)
+            launchForce = 15f;
+
+            while (launchForce < 17f)
+            {
+                launchForce++;
                 m_TankShooting.m_CurrentLaunchForce = launchForce;
 
+                yield return null;
+            }
+
             m_TankShooting.Fire();
+
+            yield return new WaitForSeconds(1f);
         }
     }
 

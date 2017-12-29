@@ -62,8 +62,6 @@ public class TargetHealth : MonoBehaviour
 
         tankInstance.m_TargetsKilled++;
 
-        Debug.Log(tankInstance.m_TargetsKilled);
-
         m_ExplosionParticles.transform.position = transform.position;
         m_ExplosionParticles.gameObject.SetActive(true);
 
