@@ -21,6 +21,8 @@ public class TankManager
     public void Setup()
     {
         m_Movement = m_Instance.GetComponent<TankMovement>();
+        m_Movement.m_Targets = targets;
+
         m_Shooting = m_Instance.GetComponent<TankShooting>();
         m_Shooting.m_TankInstance = this;
 

@@ -14,9 +14,9 @@ public class TankShooting : MonoBehaviour
     public float m_MaxLaunchForce = 30f; 
     public float m_MaxChargeTime = 0.75f;
     public TankManager m_TankInstance;
+    [HideInInspector] public float m_CurrentLaunchForce;
 
     private string m_FireButton;         
-    private float m_CurrentLaunchForce;  
     private float m_ChargeSpeed;         
     private bool m_Fired;                
 
@@ -72,7 +72,7 @@ public class TankShooting : MonoBehaviour
     }
 
 
-    private void Fire()
+    public void Fire()
     {
         // Instantiate and launch the shell.
         m_Fired = true;
