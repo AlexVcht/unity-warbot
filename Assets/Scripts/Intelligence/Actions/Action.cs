@@ -1,7 +1,7 @@
 ﻿
 public interface ActionGame
 {
-    void execute();
+    void execute(Connaissances connaissances, int x, int y);
 }
 
 public interface ActionGenetique
@@ -18,7 +18,7 @@ public abstract class Action : ActionGame, ActionGenetique
         this.duree = p_duree;
     }
 
-    public abstract void execute();
+    public abstract void execute(Connaissances connaissances, int x, int y);
     public abstract void mutate();
 
     public long getDuree()

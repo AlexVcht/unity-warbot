@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class Connaissances
@@ -10,7 +11,14 @@ public class Connaissances
         connaissances = new ArrayList();
     }
 
-
+    public void add(GameObject obj)
+    {
+        if(obj == null)
+        {
+            return;
+        }
+        connaissances.Add(new Connaissance(obj, Environment.TickCount);
+    }
 
     public class Connaissance
     {

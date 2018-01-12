@@ -1,4 +1,6 @@
-﻿public class BougerRandom : Action
+﻿using UnityEngine;
+
+public class BougerRandom : Action
 {
     private int direction;
 
@@ -6,14 +8,13 @@
         direction = p_direction;
     }
 
-    public override void execute()
+    public override void execute(Connaissances connaissances, int x, int y)
     {
-        throw new System.NotImplementedException();
     }
 
     public override void mutate()
     {
-        throw new System.NotImplementedException();
+
     }
 
     public int getDirection()
