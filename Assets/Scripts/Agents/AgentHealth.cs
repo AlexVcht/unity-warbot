@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class TargetHealth : MonoBehaviour
+public class AgentHealth : MonoBehaviour
 {
     public float m_StartingHealth = 1f;
     public Slider m_Slider;
@@ -33,8 +33,7 @@ public class TargetHealth : MonoBehaviour
         SetHealthUI();
     }
 
-
-    public void TakeDamage(float amount, TankManager tankInstance)
+    public void TakeDamageAgent(float amount)
     {
         // Adjust the target's current health, update the UI based on the new health and check whether or not the tank is dead.
         m_CurrentHealth -= amount;
@@ -42,7 +41,18 @@ public class TargetHealth : MonoBehaviour
         SetHealthUI();
 
         if (m_CurrentHealth <= 0f && !m_Dead)
-            OnDeath(tankInstance);
+            OnDeathAgent();
+    }
+
+    public void TakeDamageTarget(float amount, TankManager tankInstance)
+    {
+        // Adjust the target's current health, update the UI based on the new health and check whether or not the tank is dead.
+        m_CurrentHealth -= amount;
+
+        SetHealthUI();
+
+        if (m_CurrentHealth <= 0f && !m_Dead)
+            OnDeathTarget(tankInstance);
     }
 
 
@@ -54,8 +64,21 @@ public class TargetHealth : MonoBehaviour
         m_FillImage.color = Color.Lerp(m_ZeroHealthColor, m_FullHealthColor, m_CurrentHealth / m_StartingHealth);
     }
 
+    private void OnDeathAgent()
+    {
+        // Play the effects for the death of the target and deactivate it.
+        m_Dead = true;
 
-    private void OnDeath(TankManager tankInstance)
+        m_ExplosionParticles.transform.position = transform.position;
+        m_ExplosionParticles.gameObject.SetActive(true);
+
+        m_ExplosionParticles.Play();
+        m_ExplosionAudio.Play();
+
+        gameObject.SetActive(false);
+    }
+
+    private void OnDeathTarget(TankManager tankInstance)
     {
         // Play the effects for the death of the target and deactivate it.
         m_Dead = true;

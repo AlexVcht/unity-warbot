@@ -2,10 +2,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TankMovement : MonoBehaviour
+public class TankMovement : MonoBehaviour, AgentMovement
 {
     public int m_PlayerNumber = 1;
-    public float m_Speed = 12f;
+    public float m_Speed = 6f;
     public float m_TurnSpeed = 180f;
     public AudioSource m_MovementAudio;
     public AudioClip m_EngineIdling;
@@ -14,8 +14,6 @@ public class TankMovement : MonoBehaviour
     public GameObject[] m_Targets;
     public GameObject m_TargetToKill;
 
-    private string m_MovementAxisName;
-    private string m_TurnAxisName;
     private Rigidbody m_Rigidbody;
     private float m_MovementInputValue;
     private float m_TurnInputValue;
@@ -46,9 +44,6 @@ public class TankMovement : MonoBehaviour
 
     private void Start()
     {
-        m_MovementAxisName = "Vertical" + m_PlayerNumber;
-        m_TurnAxisName = "Horizontal" + m_PlayerNumber;
-
         m_OriginalPitch = m_MovementAudio.pitch;
 
         StartCoroutine(KillThemAll());
@@ -57,14 +52,10 @@ public class TankMovement : MonoBehaviour
     // Running every frame
     private void Update()
     {
-        // Store the player's input and make sure the audio for the engine is playing.
-        //m_MovementInputValue = Input.GetAxis(m_MovementAxisName);
-        //m_TurnInputValue = Input.GetAxis(m_TurnAxisName);
-
         EngineAudio();
     }
 
-    private void EngineAudio()
+    public void EngineAudio()
     {
         // Play the correct audio clip based on whether or not the tank is moving and what audio is currently playing.
         if (Mathf.Abs(m_MovementInputValue) < 0.1f && Mathf.Abs(m_TurnInputValue) < 0.1f)
@@ -85,13 +76,6 @@ public class TankMovement : MonoBehaviour
                 m_MovementAudio.Play();
             }
         }
-    }
-
-    private void FixedUpdate()
-    {
-        // Move and turn the tank. 
-        /*Move();
-        Turn();*/
     }
 
     private IEnumerator KillThemAll()
@@ -137,7 +121,7 @@ public class TankMovement : MonoBehaviour
         }
     }
 
-    private IEnumerator Move()
+    public IEnumerator Move()
     {
         Debug.Log("Move");
 
@@ -190,26 +174,4 @@ public class TankMovement : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
     }
-
-    /*private void Move()
-    {
-        // Create a vector in the direction the tank is facing with a magnitude based on the input, speed and the time between frames.
-        Vector3 movement = transform.forward * m_MovementInputValue * m_Speed * Time.deltaTime;
-
-        // Apply this movement to the rigidbody's position.
-        m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
-    }
-
-
-    private void Turn()
-    {
-        // Determine the number of degrees to be turned based on the input, speed and time between frames.
-        float turn = m_TurnInputValue * m_TurnSpeed * Time.deltaTime;
-
-        // Make this into a rotation in the y axis.
-        Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
-
-        // Apply this rotation to the rigidbody's rotation.
-        m_Rigidbody.MoveRotation(m_Rigidbody.rotation * turnRotation);
-    }*/
 }

@@ -137,7 +137,6 @@ GameObject:
   m_Component:
   - component: {fileID: 224731167941472486}
   - component: {fileID: 114479556123096960}
-  - component: {fileID: 114621632542418144}
   m_Layer: 5
   m_Name: HealthSlider
   m_TagString: Untagged
@@ -208,9 +207,6 @@ GameObject:
   - component: {fileID: 82671774547405974}
   - component: {fileID: 65888946086344220}
   - component: {fileID: 82221869890693808}
-  - component: {fileID: 114476194302210636}
-  - component: {fileID: 114769793132037684}
-  - component: {fileID: 114070946694597464}
   m_Layer: 9
   m_Name: Tank
   m_TagString: Untagged
@@ -382,7 +378,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1786049740999704}
   m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.82, y: 0, z: 8.16}
+  m_LocalPosition: {x: -6.82, y: 0, z: 11.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4811632698781834}
@@ -779,27 +775,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!114 &114070946694597464
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1786049740999704}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06b38fa3f5188f6419ab17bc1669c18c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PlayerNumber: 1
-  m_Shell: {fileID: 54789020808718414, guid: 15af84d9ec204044788d2c787cb4f1da, type: 2}
-  m_FireTransform: {fileID: 4253300328066658}
-  m_AimSlider: {fileID: 114130139636558502}
-  m_ShootingAudio: {fileID: 82221869890693808}
-  m_ChargingClip: {fileID: 8300000, guid: c17f124fcdc0f5446a72f793898bd74b, type: 3}
-  m_FireClip: {fileID: 8300000, guid: 672a9941361ad494a99fba36759eca80, type: 3}
-  m_MinLaunchForce: 15
-  m_MaxLaunchForce: 30
-  m_MaxChargeTime: 0.75
 --- !u!114 &114130139636558502
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -912,24 +887,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 0
   m_FillOrigin: 3
---- !u!114 &114476194302210636
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1786049740999704}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29af3199e11b72e47b41ff380db540fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PlayerNumber: 1
-  m_Speed: 12
-  m_TurnSpeed: 180
-  m_MovementAudio: {fileID: 82671774547405974}
-  m_EngineIdling: {fileID: 8300000, guid: 4932ab25b84dd7649b80af68a9660ddc, type: 3}
-  m_EngineDriving: {fileID: 8300000, guid: d7ca9fb5aa30155449192b23d7fb3336, type: 3}
-  m_PitchRange: 0.2
 --- !u!114 &114479556123096960
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -978,18 +935,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114621632542418144
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1436718479225452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88aed18ae5498b84bb8411ee4db7802f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UseRelativeRotation: 1
 --- !u!114 &114705119797541904
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1017,23 +962,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114769793132037684
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1786049740999704}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8326b9dca06e5bc4885942c9371f51f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_StartingHealth: 100
-  m_Slider: {fileID: 114479556123096960}
-  m_FillImage: {fileID: 114375628986492108}
-  m_FullHealthColor: {r: 0, g: 1, b: 0, a: 1}
-  m_ZeroHealthColor: {r: 1, g: 0, b: 0, a: 1}
-  m_ExplosionPrefab: {fileID: 151086, guid: ee49a9a8678ecf8468eb488e1ac8d42b, type: 2}
 --- !u!114 &114844725232542816
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1121,7 +1049,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: -1571871045
+  randomSeed: -1597231610
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -4452,7 +4380,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 1856345131
+  randomSeed: 1364482109
   InitialModule:
     serializedVersion: 3
     enabled: 1

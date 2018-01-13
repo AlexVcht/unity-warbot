@@ -17,7 +17,7 @@ public class Connaissances
         {
             return;
         }
-        connaissances.Add(new Connaissance(obj, Environment.TickCount);
+        connaissances.Add(new Connaissance(obj, Environment.TickCount));
     }
 
     public class Connaissance

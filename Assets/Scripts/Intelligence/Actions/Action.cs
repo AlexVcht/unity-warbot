@@ -1,5 +1,4 @@
-﻿
-public interface ActionGame
+﻿public interface ActionGame
 {
     void execute(Connaissances connaissances, int x, int y);
 }

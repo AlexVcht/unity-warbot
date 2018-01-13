@@ -5,14 +5,15 @@ using UnityEngine;
 
 public class ScoreGUI : MonoBehaviour
 {
-    [HideInInspector] public TankManager[] m_Tanks;
+    [HideInInspector] public TeamManager teamManager;
+
     private string scoreUI;
 
-    public void OnGUI()
+   /* public void OnGUI()
     {
         scoreUI = string.Empty;
 
-        foreach (TankManager tank in m_Tanks)
+        foreach (TankManager tank in teamManager.m_Tanks)
         {
             scoreUI += tank.m_ColoredPlayerText + " : " + tank.m_TargetsKilled + "\n";
         }
@@ -24,9 +25,9 @@ public class ScoreGUI : MonoBehaviour
     {
         scoreUI = string.Empty;
 
-        foreach (TankManager tank in m_Tanks)
+        foreach (TankManager tank in teamManager.m_Tanks)
         {
             scoreUI += tank.m_ColoredPlayerText + " : " + tank.m_TargetsKilled + "\n";
         }
-    }
+    }*/
 }

@@ -2,33 +2,24 @@
 using UnityEngine;
 
 [Serializable]
-public class TankManager : AgentManager
+public class PathfinderManager : AgentManager
 {
     public Color m_PlayerColor;
     public Transform m_SpawnPoint;
     [HideInInspector] public int m_PlayerNumber;
     [HideInInspector] public string m_ColoredPlayerText;
     [HideInInspector] public GameObject m_Instance;
-    [HideInInspector] public int m_Wins;
-    [HideInInspector] public int m_TargetsKilled;
-    [HideInInspector] public GameObject[] targets;
 
-    private TankMovement m_Movement;
-    private TankShooting m_Shooting;
+    private PathfinderMovement m_Movement;
     private GameObject m_CanvasGameObject;
 
     public void Setup()
     {
-        m_Movement = m_Instance.GetComponent<TankMovement>();
-        m_Movement.m_Targets = targets;
-
-        m_Shooting = m_Instance.GetComponent<TankShooting>();
-        m_Shooting.m_TankInstance = this;
+        m_Movement = m_Instance.GetComponent<PathfinderMovement>();
 
         m_CanvasGameObject = m_Instance.GetComponentInChildren<Canvas>().gameObject;
-
+         
         m_Movement.m_PlayerNumber = m_PlayerNumber;
-        m_Shooting.m_PlayerNumber = m_PlayerNumber;
 
         m_ColoredPlayerText = "<color=#" + ColorUtility.ToHtmlStringRGB(m_PlayerColor) + ">TANK " + m_PlayerNumber +
                               "</color>";
@@ -45,7 +36,6 @@ public class TankManager : AgentManager
     public void DisableControl()
     {
         m_Movement.enabled = false;
-        m_Shooting.enabled = false;
 
         m_CanvasGameObject.SetActive(false);
     }
@@ -54,7 +44,6 @@ public class TankManager : AgentManager
     public void EnableControl()
     {
         m_Movement.enabled = true;
-        m_Shooting.enabled = true;
 
         m_CanvasGameObject.SetActive(true);
     }
@@ -64,8 +53,6 @@ public class TankManager : AgentManager
     {
         m_Instance.transform.position = m_SpawnPoint.position;
         m_Instance.transform.rotation = m_SpawnPoint.rotation;
-
-        m_TargetsKilled = 0;
 
         m_Instance.SetActive(false);
         m_Instance.SetActive(true);

@@ -31,19 +31,19 @@ public class ShellExplosion : MonoBehaviour
 
             targetRigidbody.AddExplosionForce(m_ExplosionForce, transform.position, m_ExplosionRadius);
 
-            TankHealth tankHealth = targetRigidbody.GetComponent<TankHealth>();
-            TargetHealth targetHealth = targetRigidbody.GetComponent<TargetHealth>();
+            AgentHealth agentHealth = targetRigidbody.GetComponent<AgentHealth>();
+            CapsuleCollider capsuleCollider = targetRigidbody.GetComponent<CapsuleCollider>();
 
-            if (!tankHealth && !targetHealth)
+            if (!agentHealth)
                 continue;
 
             float damage = CalculateDamage(targetRigidbody.position);
 
-            if (tankHealth != null)
-                tankHealth.TakeDamage(damage);
-            else if (targetHealth != null)
+            if (agentHealth != null && capsuleCollider == null)
+                agentHealth.TakeDamageAgent(damage);
+            else if (agentHealth != null && capsuleCollider != null)
             {
-                targetHealth.TakeDamage(damage, m_TankInstance);
+                agentHealth.TakeDamageTarget(damage, m_TankInstance);
             }
         }
 
