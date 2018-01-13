@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ScoreGUI : MonoBehaviour
 {
-    [HideInInspector] public TeamManager teamManager;
+    [HideInInspector] public AgentManager m_AgentManager;
 
     private string scoreUI;
 

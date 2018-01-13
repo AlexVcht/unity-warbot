@@ -11,26 +11,22 @@ public class GameManager : MonoBehaviour
     public float m_EndDelay = 2f;
     public CameraControl m_CameraControl;
     public Text m_MessageText;
-    public GameObject m_TargetPrefab;
 
     private int m_RoundNumber;
     private WaitForSeconds m_StartWait;
     private WaitForSeconds m_EndWait;
     private TankManager m_RoundWinner;
     private TankManager m_GameWinner;
-    private GameObject[] targets;
     private ScoreGUI scoreGUI;
-    private TeamManager teamManager;
+    private AgentManager agentManager;
 
     private void Start()
     {
         m_StartWait = new WaitForSeconds(m_StartDelay);
         m_EndWait = new WaitForSeconds(m_EndDelay);
-
-        teamManager = GetComponent<TeamManager>();
-
-        SpawnAllTargets();
-        teamManager.SpawnAllTanksAndPathfinder();
+        
+        agentManager = GetComponent<AgentManager>();
+        agentManager.SpawnAgents(m_NumTargets);
 
         SetScoreUI();
 
@@ -39,44 +35,24 @@ public class GameManager : MonoBehaviour
         StartCoroutine(GameLoop());
     }
 
-    private void SpawnAllTargets()
-    {
-        targets = new GameObject[m_NumTargets];
-
-        for (int i = 0; i < m_NumTargets; i++)
-        {
-            Vector3 position = new Vector3(Random.Range(-35.0f, 35.0f), 0f, Random.Range(-35.0f, 35.0f));
-            Quaternion quaternion = Quaternion.identity;
-
-            targets[i] = Instantiate(m_TargetPrefab, position, quaternion) as GameObject;
-            targets[i].SetActive(true);
-        }
-    }
-    
     private void SetScoreUI()
     {
         ScoreGUI scoreGui = GetComponent<ScoreGUI>();
 
-        scoreGui.teamManager = teamManager;
+        scoreGui.m_AgentManager = agentManager;
     }
 
     // On set la camera pour voir tank + targets
     private void SetCameraTargets()
     {
         int iterator = 0;
-        GameObject[] allGameObjects = teamManager.GetAllGameObjects();
-        int size = allGameObjects.Length + m_NumTargets;
+        GameObject[] allGameObjects = agentManager.GetAllGameObjects();
+        int size = allGameObjects.Length;
         Transform[] tranformTargets = new Transform[size];
 
         foreach (GameObject go in allGameObjects)
         {
             tranformTargets[iterator] = go.transform;
-            iterator++;
-        }
-
-        foreach (GameObject target in targets)
-        {
-            tranformTargets[iterator] = target.transform;
             iterator++;
         }
 
@@ -155,9 +131,9 @@ public class GameManager : MonoBehaviour
     {
         int nbTargetsAlive = 0;
 
-        for (int i = 0; i < targets.Length; i++)
+        for (int i = 0; i < agentManager.m_Targets.Length; i++)
         {
-            if (targets[i].activeSelf)
+            if (agentManager.m_Targets[i].activeSelf)
                 nbTargetsAlive++;
         }
 
@@ -166,7 +142,7 @@ public class GameManager : MonoBehaviour
 
     private void RespawnTanksIfDead()
     {
-        foreach (TankManager tank in teamManager.m_Tanks)
+        foreach (TankManager tank in agentManager.m_Tanks)
         {
             if (!tank.m_Instance.activeSelf)
             {
@@ -181,10 +157,10 @@ public class GameManager : MonoBehaviour
     {
         TankManager tankWinner = null;
 
-        for (int i = 0; i < teamManager.m_Tanks.Length - 1; i++)
+        for (int i = 0; i < agentManager.m_Tanks.Length - 1; i++)
         {
-            if (teamManager.m_Tanks[i].m_TargetsKilled > teamManager.m_Tanks[i + 1].m_TargetsKilled)
-                tankWinner = teamManager.m_Tanks[i];
+            if (agentManager.m_Tanks[i].m_TargetsKilled > agentManager.m_Tanks[i + 1].m_TargetsKilled)
+                tankWinner = agentManager.m_Tanks[i];
         }
 
         return tankWinner;
@@ -193,10 +169,10 @@ public class GameManager : MonoBehaviour
 
     private TankManager GetGameWinner()
     {
-        for (int i = 0; i < teamManager.m_Tanks.Length; i++)
+        for (int i = 0; i < agentManager.m_Tanks.Length; i++)
         {
-            if (teamManager.m_Tanks[i].m_Wins == m_NumRoundsToWin)
-                return teamManager.m_Tanks[i];
+            if (agentManager.m_Tanks[i].m_Wins == m_NumRoundsToWin)
+                return agentManager.m_Tanks[i];
         }
 
         return null;
@@ -212,9 +188,9 @@ public class GameManager : MonoBehaviour
 
         message += "\n\n\n\n";
 
-        for (int i = 0; i < teamManager.m_Tanks.Length; i++)
+        for (int i = 0; i < agentManager.m_Tanks.Length; i++)
         {
-            message += teamManager.m_Tanks[i].m_ColoredPlayerText + ": " + teamManager.m_Tanks[i].m_Wins + " WINS\n";
+            message += agentManager.m_Tanks[i].m_ColoredPlayerText + ": " + agentManager.m_Tanks[i].m_Wins + " WINS\n";
         }
 
         if (m_GameWinner != null)
@@ -225,17 +201,17 @@ public class GameManager : MonoBehaviour
 
     private void ResetAll()
     {
-        foreach (TankManager tm in teamManager.m_Tanks)
+        foreach (TankManager tm in agentManager.m_Tanks)
         {
             tm.Reset();
         }
 
-        foreach (var target in targets)
+        foreach (var target in agentManager.m_Targets)
         {
             target.SetActive(true);
         }
 
-        foreach (PathfinderManager pfm in teamManager.m_Pathfinders)
+        foreach (PathfinderManager pfm in agentManager.m_Pathfinders)
         {
             pfm.Reset();
         }
@@ -244,12 +220,12 @@ public class GameManager : MonoBehaviour
 
     private void EnableControl()
     {
-        foreach (TankManager tm in teamManager.m_Tanks)
+        foreach (TankManager tm in agentManager.m_Tanks)
         {
             tm.EnableControl();
         }
 
-        foreach (PathfinderManager pfm in teamManager.m_Pathfinders)
+        foreach (PathfinderManager pfm in agentManager.m_Pathfinders)
         {
             pfm.EnableControl();
         }
@@ -258,12 +234,12 @@ public class GameManager : MonoBehaviour
 
     private void DisableControl()
     {
-        foreach (TankManager tm in teamManager.m_Tanks)
+        foreach (TankManager tm in agentManager.m_Tanks)
         {
             tm.DisableControl();
         }
 
-        foreach (PathfinderManager pfm in teamManager.m_Pathfinders)
+        foreach (PathfinderManager pfm in agentManager.m_Pathfinders)
         {
             pfm.DisableControl();
         }

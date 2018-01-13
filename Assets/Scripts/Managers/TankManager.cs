@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class TankManager : AgentManager
+public class TankManager : AgentManagerInterface
 {
     public Color m_PlayerColor;
     public Transform m_SpawnPoint;

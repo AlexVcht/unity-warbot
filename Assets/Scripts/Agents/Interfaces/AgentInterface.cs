@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public interface AgentManager
+public interface AgentManagerInterface
 {
     void Setup();
 

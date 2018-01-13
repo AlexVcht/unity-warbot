@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class PathfinderManager : AgentManager
+public class PathfinderManager : AgentManagerInterface
 {
     public Color m_PlayerColor;
     public Transform m_SpawnPoint;
