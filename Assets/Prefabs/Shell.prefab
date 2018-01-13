@@ -59,6 +59,7 @@ GameObject:
   - component: {fileID: 136252700999647798}
   - component: {fileID: 54789020808718414}
   - component: {fileID: 108323735442862286}
+  - component: {fileID: 114294768518622904}
   m_Layer: 0
   m_Name: Shell
   m_TagString: Untagged
@@ -310,6 +311,35 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &114294768518622904
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1452359952835168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a77fdcebbe85f14ab98dfad5da07c20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TankMask:
+    serializedVersion: 2
+    m_Bits: 512
+  m_ExplosionParticles: {fileID: 198393097308034506}
+  m_ExplosionAudio: {fileID: 82565844487765926}
+  m_MaxDamage: 100
+  m_ExplosionForce: 1000
+  m_MaxLifeTime: 2
+  m_ExplosionRadius: 5
+  m_TankInstance:
+    m_PlayerColor: {r: 0, g: 0, b: 0, a: 0}
+    m_SpawnPoint: {fileID: 0}
+    m_PlayerNumber: 0
+    m_ColoredPlayerText: 
+    m_Instance: {fileID: 0}
+    m_Wins: 0
+    m_TargetsKilled: 0
+    targets: []
 --- !u!136 &136252700999647798
 CapsuleCollider:
   m_ObjectHideFlags: 1

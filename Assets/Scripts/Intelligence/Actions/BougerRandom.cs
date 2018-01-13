@@ -2,9 +2,9 @@
 
 public class BougerRandom : Action
 {
-    private int direction;
+    private Transform direction;
 
-    public BougerRandom(long p_duree, int p_direction) : base(p_duree) {
+    public BougerRandom(long p_duree, Transform p_direction) : base(p_duree) {
         direction = p_direction;
     }
 
@@ -17,12 +17,12 @@ public class BougerRandom : Action
 
     }
 
-    public int getDirection()
+    public Transform getDirection()
     {
         return direction;
     }
 
-    public void setDirection(int p_direction)
+    public void setDirection(Transform p_direction)
     {
         direction = p_direction;
     }

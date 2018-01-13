@@ -7,14 +7,8 @@ public class TeamManager : MonoBehaviour
 {
     public TankManager[] m_Tanks;
     public PathfinderManager[] m_Pathfinders;
-
     public GameObject m_TankPrefab;
     public GameObject m_PathfinderPrefab;
-
-    public void Setup()
-    {
-    }
-
 
     public void SpawnAllTanksAndPathfinder()
     {

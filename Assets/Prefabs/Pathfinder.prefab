@@ -119,6 +119,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224336792057304500}
   - component: {fileID: 114181386107432626}
+  - component: {fileID: 114804086381865296}
   m_Layer: 5
   m_Name: HealthSlider
   m_TagString: Untagged
@@ -287,6 +288,8 @@ GameObject:
   - component: {fileID: 82517461020300522}
   - component: {fileID: 65726211017287688}
   - component: {fileID: 82477497385657516}
+  - component: {fileID: 114652887262019598}
+  - component: {fileID: 114027793651037136}
   m_Layer: 9
   m_Name: Pathfinder
   m_TagString: Untagged
@@ -775,6 +778,24 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &114027793651037136
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1977255938335004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2562ee31cdb475c46894f6ee3a49d882, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PlayerNumber: 1
+  m_Speed: 16
+  m_TurnSpeed: 180
+  m_MovementAudio: {fileID: 82517461020300522}
+  m_EngineIdling: {fileID: 8300000, guid: 4932ab25b84dd7649b80af68a9660ddc, type: 3}
+  m_EngineDriving: {fileID: 8300000, guid: d7ca9fb5aa30155449192b23d7fb3336, type: 3}
+  m_PitchRange: 0.2
 --- !u!114 &114081914184427782
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -941,6 +962,23 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114652887262019598
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1977255938335004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98cd46a09b334ed439131cbe98f181de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StartingHealth: 100
+  m_Slider: {fileID: 114181386107432626}
+  m_FillImage: {fileID: 114081914184427782}
+  m_FullHealthColor: {r: 0, g: 1, b: 0, a: 1}
+  m_ZeroHealthColor: {r: 1, g: 0, b: 0, a: 1}
+  m_ExplosionPrefab: {fileID: 151086, guid: ee49a9a8678ecf8468eb488e1ac8d42b, type: 2}
 --- !u!114 &114665172071140522
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -968,6 +1006,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114804086381865296
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1697808785498280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88aed18ae5498b84bb8411ee4db7802f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UseRelativeRotation: 1
 --- !u!114 &114909552025378206
 MonoBehaviour:
   m_ObjectHideFlags: 1

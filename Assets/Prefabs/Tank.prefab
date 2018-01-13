@@ -137,6 +137,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224731167941472486}
   - component: {fileID: 114479556123096960}
+  - component: {fileID: 114055396095197202}
   m_Layer: 5
   m_Name: HealthSlider
   m_TagString: Untagged
@@ -207,6 +208,9 @@ GameObject:
   - component: {fileID: 82671774547405974}
   - component: {fileID: 65888946086344220}
   - component: {fileID: 82221869890693808}
+  - component: {fileID: 114976762403752130}
+  - component: {fileID: 114342422133647440}
+  - component: {fileID: 114516506293300474}
   m_Layer: 9
   m_Name: Tank
   m_TagString: Untagged
@@ -775,6 +779,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &114055396095197202
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1436718479225452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88aed18ae5498b84bb8411ee4db7802f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UseRelativeRotation: 1
 --- !u!114 &114130139636558502
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -860,6 +876,26 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114342422133647440
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1786049740999704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29af3199e11b72e47b41ff380db540fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PlayerNumber: 1
+  m_Speed: 6
+  m_TurnSpeed: 180
+  m_MovementAudio: {fileID: 82671774547405974}
+  m_EngineIdling: {fileID: 8300000, guid: 4932ab25b84dd7649b80af68a9660ddc, type: 3}
+  m_EngineDriving: {fileID: 8300000, guid: d7ca9fb5aa30155449192b23d7fb3336, type: 3}
+  m_PitchRange: 0.2
+  m_Targets: []
+  m_TargetToKill: {fileID: 0}
 --- !u!114 &114375628986492108
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -935,6 +971,37 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114516506293300474
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1786049740999704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06b38fa3f5188f6419ab17bc1669c18c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PlayerNumber: 1
+  m_Shell: {fileID: 54789020808718414, guid: 15af84d9ec204044788d2c787cb4f1da, type: 2}
+  m_FireTransform: {fileID: 4253300328066658}
+  m_AimSlider: {fileID: 114130139636558502}
+  m_ShootingAudio: {fileID: 82671774547405974}
+  m_ChargingClip: {fileID: 8300000, guid: c17f124fcdc0f5446a72f793898bd74b, type: 3}
+  m_FireClip: {fileID: 8300000, guid: 672a9941361ad494a99fba36759eca80, type: 3}
+  m_MinLaunchForce: 15
+  m_MaxLaunchForce: 30
+  m_MaxChargeTime: 0.75
+  m_TankInstance:
+    m_PlayerColor: {r: 0, g: 0, b: 0, a: 0}
+    m_SpawnPoint: {fileID: 0}
+    m_PlayerNumber: 0
+    m_ColoredPlayerText: 
+    m_Instance: {fileID: 0}
+    m_Wins: 0
+    m_TargetsKilled: 0
+    targets: []
+  m_CurrentLaunchForce: 0
 --- !u!114 &114705119797541904
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -989,6 +1056,23 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114976762403752130
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1786049740999704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98cd46a09b334ed439131cbe98f181de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StartingHealth: 100
+  m_Slider: {fileID: 114479556123096960}
+  m_FillImage: {fileID: 114375628986492108}
+  m_FullHealthColor: {r: 0, g: 1, b: 0, a: 1}
+  m_ZeroHealthColor: {r: 1, g: 0, b: 0, a: 1}
+  m_ExplosionPrefab: {fileID: 151086, guid: ee49a9a8678ecf8468eb488e1ac8d42b, type: 2}
 --- !u!198 &198145314583839790
 ParticleSystem:
   m_ObjectHideFlags: 1
