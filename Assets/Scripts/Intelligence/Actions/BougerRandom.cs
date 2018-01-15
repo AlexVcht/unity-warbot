@@ -2,14 +2,15 @@
 
 public class BougerRandom : Action
 {
-    private Transform direction;
+    private Quaternion direction;
 
-    public BougerRandom(long p_duree, Transform p_direction) : base(p_duree) {
+    public BougerRandom(long p_duree, Quaternion p_direction) : base(p_duree) {
         direction = p_direction;
     }
 
-    public override void execute(Connaissances connaissances, int x, int y)
+    public override void execute(GameObject obj, Connaissances connaissances)
     {
+
     }
 
     public override void mutate()
@@ -17,12 +18,12 @@ public class BougerRandom : Action
 
     }
 
-    public Transform getDirection()
+    public Quaternion getDirection()
     {
         return direction;
     }
 
-    public void setDirection(Transform p_direction)
+    public void setDirection(Quaternion p_direction)
     {
         direction = p_direction;
     }

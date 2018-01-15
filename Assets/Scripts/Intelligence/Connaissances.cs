@@ -17,7 +17,7 @@ public class Connaissances
         {
             return;
         }
-        connaissances.Add(new Connaissance(obj, Environment.TickCount));
+        connaissances.Add(new Connaissance(obj));
     }
 
     public class Connaissance
@@ -25,10 +25,10 @@ public class Connaissances
         private GameObject agent;
         private long insertedAt;
 
-        public Connaissance(GameObject p_agent, long p_insertedAt)
+        public Connaissance(GameObject p_agent)
         {
             agent = p_agent;
-            insertedAt = p_insertedAt;
+            insertedAt = Environment.TickCount;
         }
 
         public GameObject getAgent()
