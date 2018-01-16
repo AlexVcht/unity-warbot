@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using UnityEngine;
 using Random = UnityEngine.Random;
 
 public interface ActionGame
@@ -10,7 +9,7 @@ public interface ActionGame
 
 public interface ActionGenetique
 {
-    void mutate();
+    void mutate(float iMutation);
 }
 
 public abstract class Action : ActionGame, ActionGenetique
@@ -36,24 +35,19 @@ public abstract class Action : ActionGame, ActionGenetique
         if(choix < 1)
         {
             if (isTank)
-                return new BougerRandomTank((int)(Random.Range(0, 3)), Quaternion.Euler(0, (int)(Random.Range(0, 360)), 0));
+                return BougerRandomTank.createRandom();
             else
-                return new BougerRandomScout((int)(Random.Range(0, 3)), Quaternion.Euler(0, (int)(Random.Range(0, 360)), 0)); 
+                return BougerRandomScout.createRandom(); 
         }
         throw new NotImplementedException();
     }
 
     public abstract IEnumerator execute(Connaissances connaissances);
 
-    public abstract void mutate();
+    public abstract void mutate(float iMutation);
 
     public long getDuree()
     {
         return duree;
-    }
-    
-    public void setDuree(long p_duree)
-    {
-        duree = p_duree;
     }
 }
