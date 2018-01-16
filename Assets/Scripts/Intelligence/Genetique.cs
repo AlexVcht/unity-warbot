@@ -2,67 +2,69 @@
 
 public class Genetique
 {
-    private Action[] tireur;
-    private Action[] eclaireur;
+    private int tailleADN;
+    private float indiceMutation;
+    private int taillePopulation;
+    private Squad[] population;
+    private int[] bestIndices;
+    private int cursor;
 
-    private float iMutateSoft;
-    private double iMutateHard;
-
-    public Action[] getActionsTireur()
+    public Genetique(int p_taillePopulation, int p_tailleADN, float p_indiceMutation)
     {
-        return tireur;
-    }
+        cursor = 0;
+        indiceMutation = p_indiceMutation;
+        bestIndices = new int[p_taillePopulation / 2];
 
-    public Action[] getActionsEclaireur()
-    {
-        return eclaireur;
-    }
-
-    public Genetique(int tailleADN, float indiceMutation)
-    {
-        tireur = new Action[tailleADN];
-        for(int i = 0; i < tailleADN; i ++)
+        population = new Squad[p_taillePopulation];
+        for (int p = 0; p < population.Length; p++)
         {
-            tireur[i] = Action.actionAleatoire(true);
+            population[p] = new Squad(p_tailleADN);
         }
-
-        eclaireur = new Action[tailleADN];
-        for (int i = 0; i < tailleADN; i++)
-        {
-            eclaireur[i] = Action.actionAleatoire(false);
-        }
-
-        iMutateSoft = indiceMutation;
-        iMutateHard = Math.Sqrt(iMutateSoft);
     }
 
     public void makeNextGeneration()
     {
-        
-    }
-
-    public void crossover(Action[] adn1, Action[] adn2)
-    {
-        int iCrossover = (int)UnityEngine.Random.Range(0, adn1.Length-1);
-        Action[] adnTMP = new Action[adn2.Length - iCrossover];
-        Array.Copy(adn2, adn2.Length - iCrossover - 1, adnTMP, 0, adn2.Length - iCrossover);
-        Array.Copy(adn1, iCrossover + 1, adn2, iCrossover + 1, adn2.Length - iCrossover);
-        Array.Copy(adnTMP, 0, adn1, iCrossover + 1, adn2.Length - iCrossover);
-    }
-
-    public void mutate(Action[] adn, bool isTank)
-    {
-        for (int i = 0; i<adn.Length; i++)
+        // Select N/2 meilleurs
+        for (int i = 0; i < bestIndices.Length; i++)
+            bestIndices[i] = -1;
+        int bestIndice = 0;
+        for(int bi = 0; bi < bestIndices.Length; bi++)
         {
-            float r = UnityEngine.Random.Range(0, 1);
-            if(r < iMutateHard)
+            for (int p = 0; p < population.Length; p++)
             {
-                adn[i] = Action.actionAleatoire(isTank);
+                if(!Array.Exists(bestIndices, e => e==bestIndice) && population[p].score >= population[bestIndice].score)
+                    bestIndice = p;
             }
-            if (r < iMutateSoft)
+            bestIndices[bi] = bestIndice;
+        }
+
+        // Make them reproduce (mutate & crossover => new one)
+
+        for (int p = 0; p < population.Length; p++)
+        {
+            if (!Array.Exists(bestIndices, e => e == p))
             {
-                adn[i].mutate(iMutateSoft);
+                Squad male = population[bestIndices[UnityEngine.Random.Range(0, bestIndices.Length)]];
+                Squad female = population[bestIndices[UnityEngine.Random.Range(0, bestIndices.Length)]];
+                population[p] = Squad.crossover(male, female);
+                population[p].mutate(indiceMutation);
             }
         }
-    } 
+
+        cursor = 0;
+    }
+
+    public Squad nextSquad()
+    {
+        if(cursor >= population.Length)
+        {
+            return null;
+        }
+        return population[cursor++];
+    }
+
+    public bool hasNext()
+    {
+        return cursor < population.Length;
+    }
 }

@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
         agentManager = GetComponent<AgentManager>();
         agentManager.InitAgents(m_NumTargets);
 
-        genetique = new Genetique(1000, 0.3f);
+        genetique = new Genetique(4, 5, 0.5f);
 
         SetScoreUI();
 
@@ -68,11 +68,22 @@ public class GameManager : MonoBehaviour
         // Mixage / brassage
         genetique.makeNextGeneration();
 
-        Connaissances connaissances = new Connaissances();
+        while (genetique.hasNext())
+        { 
+            Connaissances connaissances = new Connaissances();
+            Squad squad = genetique.nextSquad();
 
-        yield return StartCoroutine(RoundStarting(connaissances));
-        yield return StartCoroutine(RoundPlaying());
-        yield return StartCoroutine(RoundEnding());
+            yield return StartCoroutine(RoundStarting(connaissances, squad));
+            yield return StartCoroutine(RoundPlaying());
+            yield return StartCoroutine(RoundEnding());
+
+            // Le score c'est un long contenant les ms du temps de jeu
+            // Récupérer le score et le mettre dans squad.setScore(score)
+
+            Debug.Log("FIN DE SQUAD : ");
+        }
+
+        Debug.Log("FIN DE GENERATION : ");
 
         if (m_GameWinner != null)
         {
@@ -86,7 +97,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private IEnumerator RoundStarting(Connaissances connaissances)
+    private IEnumerator RoundStarting(Connaissances connaissances, Squad squad)
     {
         ResetAll();
         DisableControl();
@@ -98,7 +109,7 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < agentManager.m_Tanks.Length; i++)
         {
-            agentManager.setIntelligence(genetique.getActionsTireur(), genetique.getActionsEclaireur(), connaissances, i);
+            agentManager.setIntelligence(squad.tireur, squad.eclaireur, connaissances, i);
             Debug.Log("Round starting : " + i);
         }
 
