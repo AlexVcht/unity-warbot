@@ -11,16 +11,15 @@ public class TankManager : AgentManagerInterface
     [HideInInspector] public GameObject m_Instance;
     [HideInInspector] public int m_Wins;
     [HideInInspector] public int m_TargetsKilled;
-    [HideInInspector] public GameObject[] targets;
 
     private TankMovement m_Movement;
     private TankShooting m_Shooting;
     private GameObject m_CanvasGameObject;
-
+ 
     public void Setup()
     {
         m_Movement = m_Instance.GetComponent<TankMovement>();
-        m_Movement.m_Targets = targets;
+        Action.tank = m_Movement;
 
         m_Shooting = m_Instance.GetComponent<TankShooting>();
         m_Shooting.m_TankInstance = this;
@@ -39,6 +38,12 @@ public class TankManager : AgentManagerInterface
         {
             renderers[i].material.color = m_PlayerColor;
         }
+    }
+
+    public void setIntelligence(ActionGame[] ADN, Connaissances connaissances)
+    {
+        m_Movement.setADN(ADN);
+        m_Movement.setConnaissances(connaissances);
     }
 
 

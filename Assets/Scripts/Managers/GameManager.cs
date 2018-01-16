@@ -19,14 +19,17 @@ public class GameManager : MonoBehaviour
     private TankManager m_GameWinner;
     private ScoreGUI scoreGUI;
     private AgentManager agentManager;
+    private Genetique genetique;
 
     private void Start()
     {
         m_StartWait = new WaitForSeconds(m_StartDelay);
         m_EndWait = new WaitForSeconds(m_EndDelay);
-        
+ 
         agentManager = GetComponent<AgentManager>();
-        agentManager.SpawnAgents(m_NumTargets);
+        agentManager.InitAgents(m_NumTargets);
+
+        genetique = new Genetique(1000, 0.2f, 0.3f);
 
         SetScoreUI();
 
@@ -62,12 +65,18 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator GameLoop()
     {
-        yield return StartCoroutine(RoundStarting());
+        // Mixage / brassage
+        genetique.makeNextGeneration();
+
+        Connaissances connaissances = new Connaissances();
+
+        yield return StartCoroutine(RoundStarting(connaissances));
         yield return StartCoroutine(RoundPlaying());
         yield return StartCoroutine(RoundEnding());
 
         if (m_GameWinner != null)
         {
+            // Peut etre la fonction reset ici meme
             SceneManager.LoadScene(0);
         }
         else
@@ -77,7 +86,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private IEnumerator RoundStarting()
+    private IEnumerator RoundStarting(Connaissances connaissances)
     {
         ResetAll();
         DisableControl();
@@ -86,6 +95,12 @@ public class GameManager : MonoBehaviour
 
         m_RoundNumber++;
         m_MessageText.text = "Generation " + m_RoundNumber;
+
+        for (int i = 0; i < agentManager.m_Tanks.Length; i++)
+        {
+            agentManager.setIntelligence(genetique.getActionsTireur(), genetique.getActionsEclaireur(), connaissances, i);
+            Debug.Log("Round starting : " + i);
+        }
 
         yield return m_StartWait;
     }
@@ -211,7 +226,7 @@ public class GameManager : MonoBehaviour
             target.SetActive(true);
         }
 
-        foreach (PathfinderManager pfm in agentManager.m_Pathfinders)
+        foreach (ScoutManager pfm in agentManager.m_Scouts)
         {
             pfm.Reset();
         }
@@ -225,7 +240,7 @@ public class GameManager : MonoBehaviour
             tm.EnableControl();
         }
 
-        foreach (PathfinderManager pfm in agentManager.m_Pathfinders)
+        foreach (ScoutManager pfm in agentManager.m_Scouts)
         {
             pfm.EnableControl();
         }
@@ -239,7 +254,7 @@ public class GameManager : MonoBehaviour
             tm.DisableControl();
         }
 
-        foreach (PathfinderManager pfm in agentManager.m_Pathfinders)
+        foreach (ScoutManager pfm in agentManager.m_Scouts)
         {
             pfm.DisableControl();
         }

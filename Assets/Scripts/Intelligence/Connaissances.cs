@@ -11,7 +11,7 @@ public class Connaissances
         connaissances = new ArrayList();
     }
 
-    public void add(GameObject obj)
+    public void add(Rigidbody obj)
     {
         if(obj == null)
         {
@@ -22,16 +22,16 @@ public class Connaissances
 
     public class Connaissance
     {
-        private GameObject agent;
-        private long insertedAt;
+        private readonly Rigidbody agent;
+        private readonly long insertedAt;
 
-        public Connaissance(GameObject p_agent)
+        public Connaissance(Rigidbody p_agent)
         {
             agent = p_agent;
             insertedAt = Environment.TickCount;
         }
 
-        public GameObject getAgent()
+        public Rigidbody getAgent()
         {
             return agent;
         }

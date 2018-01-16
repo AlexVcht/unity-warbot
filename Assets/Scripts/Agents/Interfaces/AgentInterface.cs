@@ -13,10 +13,3 @@ public interface AgentManagerInterface
 
     void Reset();
 }
-
-public interface AgentMovement
-{
-    void EngineAudio();
-
-    IEnumerator Move();
-}

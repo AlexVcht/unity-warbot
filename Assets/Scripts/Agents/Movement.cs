@@ -2,50 +2,57 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PathfinderMovement : MonoBehaviour, AgentMovement
+public class Movement : MonoBehaviour
 {
     public int m_PlayerNumber = 1;
-    public float m_Speed = 15;
-    public float m_TurnSpeed = 180f;
+    public float m_Speed = 0f;
     public AudioSource m_MovementAudio;
     public AudioClip m_EngineIdling;
     public AudioClip m_EngineDriving;
     public float m_PitchRange = 0.2f;
 
-    private Rigidbody m_Rigidbody;
-    private float m_MovementInputValue;
-    private float m_TurnInputValue;
-    private float m_OriginalPitch;
+    protected Rigidbody m_Rigidbody;
+    protected float m_MovementInputValue;
+    protected float m_OriginalPitch;
+    protected ActionGame[] ADN;
+    protected Connaissances connaissances;
 
+    public void setADN(ActionGame[] adn)
+    {
+        ADN = adn;
+    }
 
-    private void Awake()
+    public void setConnaissances(Connaissances co)
+    {
+        connaissances = co;
+    }
+
+    protected void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
     }
 
-    private void OnEnable()
+    protected void OnEnable()
     {
-        // isKinematic : if force can be apply or not
         m_Rigidbody.isKinematic = false;
 
-        // 1 pour avancer et -1 pour reculer
         m_MovementInputValue = 1f;
-        m_TurnInputValue = 0f;
     }
 
-    private void OnDisable()
+    protected void OnDisable()
     {
         m_Rigidbody.isKinematic = true;
     }
 
-    private void Start()
+    protected void Start()
     {
         m_OriginalPitch = m_MovementAudio.pitch;
 
-        //StartCoroutine(KillThemAll());
+        StartCoroutine(LectureADN());
     }
+
     // Running every frame
-    private void Update()
+    protected void Update()
     {
         EngineAudio();
     }
@@ -53,7 +60,7 @@ public class PathfinderMovement : MonoBehaviour, AgentMovement
     public void EngineAudio()
     {
         // Play the correct audio clip based on whether or not the tank is moving and what audio is currently playing.
-        if (Mathf.Abs(m_MovementInputValue) < 0.1f && Mathf.Abs(m_TurnInputValue) < 0.1f)
+        if (Mathf.Abs(m_MovementInputValue) < 0.1f)
         {
             if (m_MovementAudio.clip == m_EngineDriving)
             {
@@ -73,49 +80,38 @@ public class PathfinderMovement : MonoBehaviour, AgentMovement
         }
     }
 
-    private void FixedUpdate()
+    public IEnumerator LectureADN()
     {
-    }
+        int iterator = 0;
 
-    public IEnumerator Move()
-    {
-        return null;
-    }
-
-    /*private IEnumerator KillThemAll()
-    {
-        Debug.Log("Kill them all");
-
-        for (int i = 0; i < m_Targets.Length; i++)
+        foreach (ActionGame actionGame in ADN)
         {
-            yield return StartCoroutine(FindTarget());
-            yield return StartCoroutine(KillIt());
+            // Si une fois que c'est fini qu'est ce qui se passe ?
+            yield return StartCoroutine(actionGame.execute(connaissances));
+
+            iterator++;
         }
-    }*/
+    }
 
-    /*private IEnumerator Move()
+    public IEnumerator BougerRandom(float duree, Quaternion direction)
     {
-        Debug.Log("Move");
-
-        m_Rigidbody.transform.LookAt(m_TargetToKill.transform);
-
-        Vector3 distanceVector3 = m_Rigidbody.transform.position - m_TargetToKill.transform.position;
+        float startTime = Time.time;
         Vector3 movement = new Vector3();
 
-        // On le met a la bonne distance
-        while (distanceVector3.magnitude > 15f)
-        {
-            // On vérifie toujours si elle est en vie sinon ca sert a rien d'aller vers elle
-            if (!m_TargetToKill.gameObject.activeSelf)
-                StopCoroutine(Move());
+        m_Rigidbody.rotation = direction;
 
+        // On le met a la bonne distance
+        while (Time.time <= startTime + duree)
+        {
             movement = transform.forward * m_MovementInputValue * m_Speed * Time.deltaTime;
 
             m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
 
-            distanceVector3 = m_Rigidbody.transform.position - m_TargetToKill.transform.position;
+            
 
             yield return null;
         }
-    }*/
+    }
+
+ 
 }

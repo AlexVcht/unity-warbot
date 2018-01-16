@@ -7,19 +7,30 @@ using Random = UnityEngine.Random;
 public class AgentManager : MonoBehaviour
 {
     public TankManager[] m_Tanks;
-    public PathfinderManager[] m_Pathfinders;
+    public ScoutManager[] m_Scouts;
     public GameObject[] m_Targets;
-
     public GameObject m_TankPrefab;
     public GameObject m_PathfinderPrefab;
     public GameObject m_TargetPrefab;
 
-    public void SpawnAgents(int nbreTargets)
+    private Genetique genetique;
+
+    public TankManager[] GetTankManagers()
+    {
+        return m_Tanks;
+    }
+
+    public void InitAgents(int nbreTargets)
     {
         SpawnAllTargets(nbreTargets);
 
+        SpawnAgents();
+    }
+
+    public void SpawnAgents()
+    {
         for (int i = 0; i < m_Tanks.Length; i++)
-        {
+        {            
             m_Tanks[i].m_Instance =
                 Instantiate(
                     m_TankPrefab,
@@ -27,26 +38,32 @@ public class AgentManager : MonoBehaviour
                     m_Tanks[i].m_SpawnPoint.rotation
                 ) as GameObject;
 
-            m_Pathfinders[i].m_Instance =
+            m_Scouts[i].m_Instance =
                 Instantiate(
                     m_PathfinderPrefab,
-                    m_Pathfinders[i].m_SpawnPoint.position,
-                    m_Pathfinders[i].m_SpawnPoint.rotation
+                    m_Scouts[i].m_SpawnPoint.position,
+                    m_Scouts[i].m_SpawnPoint.rotation
                 ) as GameObject;
 
             m_Tanks[i].m_PlayerNumber = i + 1;
             m_Tanks[i].Setup();
 
-            m_Pathfinders[i].m_PlayerNumber = i + 1;
-            m_Pathfinders[i].Setup();
+            m_Scouts[i].m_PlayerNumber = i + 1;
+            m_Scouts[i].Setup();
         }
     }
 
-    private void SpawnAllTargets(int nbreTargets)
+    public void setIntelligence(ActionGame[] ADNTireur, ActionGame[] ADNScout, Connaissances connaissances, int equipe)
     {
-        m_Targets = new GameObject[nbreTargets];
+        m_Tanks[equipe].setIntelligence(ADNTireur, connaissances);
+        m_Scouts[equipe].setIntelligence(ADNScout, connaissances);
+    }
 
-        for (int i = 0; i < nbreTargets; i++)
+    private void SpawnAllTargets(int m_nbreTargets)
+    {
+        m_Targets = new GameObject[m_nbreTargets];
+
+        for (int i = 0; i < m_nbreTargets; i++)
         {
             Vector3 position = new Vector3(Random.Range(-35.0f, 35.0f), 0f, Random.Range(-35.0f, 35.0f));
             Quaternion quaternion = Quaternion.identity;
@@ -60,7 +77,7 @@ public class AgentManager : MonoBehaviour
     {
         int i = 0;
 
-        GameObject[] completeList = new GameObject[m_Tanks.Length + m_Pathfinders.Length + m_Targets.Length];
+        GameObject[] completeList = new GameObject[m_Tanks.Length + m_Scouts.Length + m_Targets.Length];
 
         foreach (TankManager tm in m_Tanks)
         {
@@ -68,7 +85,7 @@ public class AgentManager : MonoBehaviour
             i++;
         }
 
-        foreach (PathfinderManager pfm in m_Pathfinders)
+        foreach (ScoutManager pfm in m_Scouts)
         {
             completeList[i] = pfm.m_Instance;
             i++;

@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class PathfinderManager : AgentManagerInterface
+public class ScoutManager : AgentManagerInterface
 {
     public Color m_PlayerColor;
     public Transform m_SpawnPoint;
@@ -10,12 +10,13 @@ public class PathfinderManager : AgentManagerInterface
     [HideInInspector] public string m_ColoredPlayerText;
     [HideInInspector] public GameObject m_Instance;
 
-    private PathfinderMovement m_Movement;
+    private ScoutMovement m_Movement;
     private GameObject m_CanvasGameObject;
 
     public void Setup()
     {
-        m_Movement = m_Instance.GetComponent<PathfinderMovement>();
+        m_Movement = m_Instance.GetComponent<ScoutMovement>();
+        Action.scout = m_Movement;
 
         m_CanvasGameObject = m_Instance.GetComponentInChildren<Canvas>().gameObject;
          
@@ -32,6 +33,11 @@ public class PathfinderManager : AgentManagerInterface
         }
     }
 
+    public void setIntelligence(ActionGame[] ADN, Connaissances connaissances)
+    {
+        m_Movement.setADN(ADN);
+        m_Movement.setConnaissances(connaissances);
+    }
 
     public void DisableControl()
     {
