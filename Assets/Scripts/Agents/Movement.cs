@@ -2,14 +2,16 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Movement : MonoBehaviour
+public abstract class Movement : MonoBehaviour
 {
     public int m_PlayerNumber = 1;
     public float m_Speed = 0f;
+    public float m_RaduisDetection = 0f;
     public AudioSource m_MovementAudio;
     public AudioClip m_EngineIdling;
     public AudioClip m_EngineDriving;
     public float m_PitchRange = 0.2f;
+    public LayerMask m_LayerMask;
 
     protected Rigidbody m_Rigidbody;
     protected float m_MovementInputValue;
@@ -104,9 +106,35 @@ public class Movement : MonoBehaviour
 
             m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
 
+            Rigidbody rigidbodyTmp = DetectTargetsAround();
+            if(rigidbodyTmp != null)
+            {
+                yield return StartCoroutine(DestroyIt(rigidbodyTmp));
+            }
+
             yield return null;
         }
     }
 
- 
+    public abstract IEnumerator DestroyIt(Rigidbody targetRigodbody);
+
+    public Rigidbody DetectTargetsAround()
+    {
+        Collider[] objectAround = Physics.OverlapSphere(transform.position, m_RaduisDetection, m_LayerMask);
+
+        for (int i = 0; i < objectAround.Length; i++)
+        {
+            Rigidbody targetRigidbody = objectAround[i].GetComponent<Rigidbody>();
+
+            if (!targetRigidbody)
+                continue;
+
+            CapsuleCollider capsuleCollider = targetRigidbody.GetComponent<CapsuleCollider>();
+
+            if (capsuleCollider != null)
+                return targetRigidbody;
+        }
+
+        return null;
+    }
 }

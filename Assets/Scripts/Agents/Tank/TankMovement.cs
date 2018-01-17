@@ -3,14 +3,41 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class TankMovement : Movement
-{   
+{
     private TankShooting m_TankShooting;
 
     private void Awake()
     {
         base.Awake();
         m_Speed = 5f;
+        m_RaduisDetection = 15f;
         m_TankShooting = GetComponent<TankShooting>();
+    }
+  
+    public override IEnumerator DestroyIt(Rigidbody targetRigodbody)
+    {
+        // Force minimum
+        float launchForce = 15f;
+
+        transform.LookAt(targetRigodbody.transform);
+
+        // Tant qu'elle est en vie on tire
+        while (targetRigodbody.gameObject.activeSelf)
+        {
+            launchForce = 15f;
+
+            while (launchForce < 17f)
+            {
+                launchForce++;
+                m_TankShooting.m_CurrentLaunchForce = launchForce;
+
+                yield return null;
+            }
+
+            m_TankShooting.Fire();
+
+            yield return new WaitForSeconds(1f);
+        }
     }
 
     /*private IEnumerator FindTarget()
@@ -68,34 +95,6 @@ public class TankMovement : Movement
             distanceVector3 = m_Rigidbody.transform.position - m_TargetToKill.transform.position;
 
             yield return null;
-        }
-    }
-
-    private IEnumerator DetroyIt()
-    {
-        Debug.Log("Destoy it");
-
-        // Force minimum
-        float launchForce = 15f;
-
-        // Tant qu'elle est en vie on tire
-        while (m_TargetToKill.gameObject.activeSelf)
-        {
-            Debug.Log("Destoy it - shoot");
-
-            launchForce = 15f;
-
-            while (launchForce < 17f)
-            {
-                launchForce++;
-                m_TankShooting.m_CurrentLaunchForce = launchForce;
-
-                yield return null;
-            }
-
-            m_TankShooting.Fire();
-
-            yield return new WaitForSeconds(1f);
         }
     }*/
 }
