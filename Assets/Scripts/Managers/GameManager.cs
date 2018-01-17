@@ -2,7 +2,6 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using System;
 using System.Diagnostics;
 
 public class GameManager : MonoBehaviour
@@ -33,7 +32,7 @@ public class GameManager : MonoBehaviour
         agentManager.InitAgents(m_NumTargets);
 
         stopWatch = Stopwatch.StartNew();
-        genetique = new Genetique(40, 500, 0.3f);
+        genetique = new Genetique(5, 500, 0.3f);
 
         SetScoreUI();
 
