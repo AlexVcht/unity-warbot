@@ -37,7 +37,7 @@ public abstract class BougerRandom : Action
 
     public static int getRandomDuree()
     {
-        return (int)(Random.Range(0, 3));
+        return (int)(Random.Range(0, 5));
     }
 
     public static Quaternion getRandomDirection()

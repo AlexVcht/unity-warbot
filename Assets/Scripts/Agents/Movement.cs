@@ -88,17 +88,21 @@ public abstract class Movement : MonoBehaviour
 
     public IEnumerator LectureADN()
     {
+        if(ADN == null)
+        {
+            yield return null;
+        }
         while (true)
         {
             foreach (ActionGame actionGame in ADN)
             {
                 if (disabled)
                 {
-                    UnityEngine.Debug.Log("Disabled => break");
-                    yield return null;
+                    break;
                 }
                 yield return StartCoroutine(actionGame.execute(connaissances));
             }
+            if (disabled) break;
         }
     }
 

@@ -7,7 +7,6 @@ using System.Diagnostics;
 
 public class GameManager : MonoBehaviour
 {
-    public int m_NumRoundsToWin = 5;
     public int m_NumTargets = 5;
     public float m_StartDelay = 2f;
     public float m_EndDelay = 2f;
@@ -33,9 +32,8 @@ public class GameManager : MonoBehaviour
         agentManager = GetComponent<AgentManager>();
         agentManager.InitAgents(m_NumTargets);
 
-
         stopWatch = Stopwatch.StartNew();
-        genetique = new Genetique(4, 1000, 0.5f);
+        genetique = new Genetique(4, 500, 0.5f);
 
         SetScoreUI();
 
@@ -49,6 +47,7 @@ public class GameManager : MonoBehaviour
         ScoreGUI scoreGui = GetComponent<ScoreGUI>();
 
         scoreGui.m_Tank = agentManager.m_Tanks;
+        scoreGui.m_Time = stopWatch;
     }
 
     // On set la camera pour voir tank + targets
@@ -72,6 +71,8 @@ public class GameManager : MonoBehaviour
     private IEnumerator GameLoop()
     {
         // Mixage / brassage
+        m_GenerationNumber++;
+        m_RoundNumber = 0;
         genetique.makeNextGeneration();
 
         while (genetique.hasNext())
