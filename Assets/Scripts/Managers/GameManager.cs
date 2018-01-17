@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System;
+using System.Diagnostics;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,17 +11,19 @@ public class GameManager : MonoBehaviour
     public int m_NumTargets = 5;
     public float m_StartDelay = 2f;
     public float m_EndDelay = 2f;
+    public long maxTimeSimul = 15 * 1000; // 2min * 60s * 1000ms
     public CameraControl m_CameraControl;
     public Text m_MessageText;
 
+    private Stopwatch stopWatch;
     private int m_RoundNumber;
     private WaitForSeconds m_StartWait;
     private WaitForSeconds m_EndWait;
     private TankManager m_RoundWinner;
-    private TankManager m_GameWinner;
     private ScoreGUI scoreGUI;
     private AgentManager agentManager;
     private Genetique genetique;
+    private Squad squad;
 
     private void Start()
     {
@@ -29,6 +33,7 @@ public class GameManager : MonoBehaviour
         agentManager = GetComponent<AgentManager>();
         agentManager.InitAgents(m_NumTargets);
 
+        stopWatch = Stopwatch.StartNew();
         genetique = new Genetique(4, 5, 0.5f);
 
         SetScoreUI();
@@ -71,21 +76,24 @@ public class GameManager : MonoBehaviour
         while (genetique.hasNext())
         { 
             Connaissances connaissances = new Connaissances();
-            Squad squad = genetique.nextSquad();
+            squad = genetique.nextSquad();
 
-            yield return StartCoroutine(RoundStarting(connaissances, squad));
+            stopWatch.Reset();
+            stopWatch.Start();
+          
+            yield return StartCoroutine(RoundStarting(connaissances));
             yield return StartCoroutine(RoundPlaying());
             yield return StartCoroutine(RoundEnding());
 
             // Le score c'est un long contenant les ms du temps de jeu
             // Récupérer le score et le mettre dans squad.setScore(score)
 
-            Debug.Log("FIN DE SQUAD : ");
+            UnityEngine.Debug.Log("FIN DE SQUAD : ");
         }
 
-        Debug.Log("FIN DE GENERATION : ");
+        UnityEngine.Debug.Log("FIN DE GENERATION : ");
 
-        if (m_GameWinner != null)
+        if (false)
         {
             // Peut etre la fonction reset ici meme
             SceneManager.LoadScene(0);
@@ -97,7 +105,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private IEnumerator RoundStarting(Connaissances connaissances, Squad squad)
+    private IEnumerator RoundStarting(Connaissances connaissances)
     {
         ResetAll();
         DisableControl();
@@ -107,11 +115,8 @@ public class GameManager : MonoBehaviour
         m_RoundNumber++;
         m_MessageText.text = "Generation " + m_RoundNumber;
 
-        for (int i = 0; i < agentManager.m_Tanks.Length; i++)
-        {
-            agentManager.setIntelligence(squad.tireur, squad.eclaireur, connaissances, i);
-            Debug.Log("Round starting : " + i);
-        }
+        agentManager.setIntelligence(squad.tireur, squad.eclaireur, connaissances);
+        UnityEngine.Debug.Log("Round starting : "+ m_RoundNumber);
 
         yield return m_StartWait;
     }
@@ -123,28 +128,20 @@ public class GameManager : MonoBehaviour
 
         m_MessageText.text = string.Empty;
 
-        while (!IsTargetsAlive())
+        while (IsTargetsAlive() >= 1 && stopWatch.ElapsedMilliseconds <= maxTimeSimul)
         {
+            // Meme si je met 15 * 1000 = 15s ca dure 30000 = 30s ...
             RespawnTanksIfDead();
             yield return null;
         }
+        stopWatch.Stop();
+        // Get the elapsed time as a TimeSpan value.
+        squad.score = (maxTimeSimul - stopWatch.ElapsedMilliseconds) / maxTimeSimul + (m_NumTargets - IsTargetsAlive()) / m_NumTargets;
     }
-
 
     private IEnumerator RoundEnding()
     {
         DisableControl();
-
-        m_RoundWinner = null;
-
-        m_RoundWinner = GetRoundWinner();
-
-        if (m_RoundWinner != null)
-        {
-            m_RoundWinner.m_Wins++;
-        }
-
-        m_GameWinner = GetGameWinner();
 
         string message = EndMessage();
         m_MessageText.text = message;
@@ -153,7 +150,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private bool IsTargetsAlive()
+    private int IsTargetsAlive()
     {
         int nbTargetsAlive = 0;
 
@@ -163,111 +160,46 @@ public class GameManager : MonoBehaviour
                 nbTargetsAlive++;
         }
 
-        return nbTargetsAlive < 1;
+        return nbTargetsAlive;
     }
 
     private void RespawnTanksIfDead()
     {
-        foreach (TankManager tank in agentManager.m_Tanks)
+        if (!agentManager.m_Tanks.m_Instance.activeSelf)
         {
-            if (!tank.m_Instance.activeSelf)
-            {
-                if (tank.m_TargetsKilled > 0)
-                    tank.m_TargetsKilled--;
-                tank.Reset();
-            }
+            if (agentManager.m_Tanks.m_TargetsKilled > 0)
+                agentManager.m_Tanks.m_TargetsKilled--;
+            agentManager.m_Tanks.Reset();
         }
     }
-
-    private TankManager GetRoundWinner()
-    {
-        TankManager tankWinner = null;
-
-        for (int i = 0; i < agentManager.m_Tanks.Length - 1; i++)
-        {
-            if (agentManager.m_Tanks[i].m_TargetsKilled > agentManager.m_Tanks[i + 1].m_TargetsKilled)
-                tankWinner = agentManager.m_Tanks[i];
-        }
-
-        return tankWinner;
-    }
-
-
-    private TankManager GetGameWinner()
-    {
-        for (int i = 0; i < agentManager.m_Tanks.Length; i++)
-        {
-            if (agentManager.m_Tanks[i].m_Wins == m_NumRoundsToWin)
-                return agentManager.m_Tanks[i];
-        }
-
-        return null;
-    }
-
 
     private string EndMessage()
     {
-        string message = "DRAW!";
-
-        if (m_RoundWinner != null)
-            message = m_RoundWinner.m_ColoredPlayerText + " WINS THE ROUND!";
-
-        message += "\n\n\n\n";
-
-        for (int i = 0; i < agentManager.m_Tanks.Length; i++)
-        {
-            message += agentManager.m_Tanks[i].m_ColoredPlayerText + ": " + agentManager.m_Tanks[i].m_Wins + " WINS\n";
-        }
-
-        if (m_GameWinner != null)
-            message = m_GameWinner.m_ColoredPlayerText + " WINS THE GAME!";
-
+        string message = agentManager.m_Tanks.m_ColoredPlayerText + " hit " + agentManager.m_Tanks.m_TargetsKilled + " targets !";
         return message;
     }
 
     private void ResetAll()
     {
-        foreach (TankManager tm in agentManager.m_Tanks)
-        {
-            tm.Reset();
-        }
+        agentManager.m_Tanks.Reset();
+        agentManager.m_Scouts.Reset();
 
         foreach (var target in agentManager.m_Targets)
         {
             target.SetActive(true);
         }
-
-        foreach (ScoutManager pfm in agentManager.m_Scouts)
-        {
-            pfm.Reset();
-        }
-
     }
 
     private void EnableControl()
     {
-        foreach (TankManager tm in agentManager.m_Tanks)
-        {
-            tm.EnableControl();
-        }
-
-        foreach (ScoutManager pfm in agentManager.m_Scouts)
-        {
-            pfm.EnableControl();
-        }
+        agentManager.m_Tanks.EnableControl();
+        agentManager.m_Scouts.EnableControl();
     }
 
 
     private void DisableControl()
     {
-        foreach (TankManager tm in agentManager.m_Tanks)
-        {
-            tm.DisableControl();
-        }
-
-        foreach (ScoutManager pfm in agentManager.m_Scouts)
-        {
-            pfm.DisableControl();
-        }
+        agentManager.m_Tanks.DisableControl();
+        agentManager.m_Scouts.DisableControl();
     }
 }
