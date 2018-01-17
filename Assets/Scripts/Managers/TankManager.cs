@@ -15,7 +15,7 @@ public class TankManager : AgentManagerInterface
     private TankMovement m_Movement;
     private TankShooting m_Shooting;
     private GameObject m_CanvasGameObject;
- 
+
     public void Setup()
     {
         m_Movement = m_Instance.GetComponent<TankMovement>();
@@ -29,8 +29,7 @@ public class TankManager : AgentManagerInterface
         m_Movement.m_PlayerNumber = m_PlayerNumber;
         m_Shooting.m_PlayerNumber = m_PlayerNumber;
 
-        m_ColoredPlayerText = "<color=#" + ColorUtility.ToHtmlStringRGB(m_PlayerColor) + ">TANK " + m_PlayerNumber +
-                              "</color>";
+        m_ColoredPlayerText = "<color=#" + ColorUtility.ToHtmlStringRGB(m_PlayerColor) + ">TANK " + m_PlayerNumber + "</color>";
 
         MeshRenderer[] renderers = m_Instance.GetComponentsInChildren<MeshRenderer>();
 

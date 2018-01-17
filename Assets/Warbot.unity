@@ -1517,7 +1517,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Tanks:
-  - m_PlayerColor: {r: 0.2901961, g: 0.5019608, b: 0.8313726, a: 0}
+    m_PlayerColor: {r: 0, g: 0.39705884, b: 0.5955882, a: 0}
     m_SpawnPoint: {fileID: 465937495}
     m_PlayerNumber: 0
     m_ColoredPlayerText: 
@@ -1525,7 +1525,7 @@ MonoBehaviour:
     m_Wins: 0
     m_TargetsKilled: 0
   m_Scouts:
-  - m_PlayerColor: {r: 0.2901961, g: 0.5019608, b: 0.83137256, a: 0}
+    m_PlayerColor: {r: 0, g: 0.39607844, b: 0.59607846, a: 0}
     m_SpawnPoint: {fileID: 486646573}
     m_PlayerNumber: 0
     m_ColoredPlayerText: 
@@ -1561,7 +1561,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ed306eebfb53884baac9d4cfb8a7d55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AgentManager: {fileID: 0}
+  m_Tank:
+    m_PlayerColor: {r: 0, g: 0, b: 0, a: 0}
+    m_SpawnPoint: {fileID: 0}
+    m_PlayerNumber: 0
+    m_ColoredPlayerText: 
+    m_Instance: {fileID: 0}
+    m_Wins: 0
+    m_TargetsKilled: 0
 --- !u!114 &1998659430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1577,6 +1584,7 @@ MonoBehaviour:
   m_NumTargets: 1
   m_StartDelay: 2
   m_EndDelay: 2
+  maxTimeSimul: 15000
   m_CameraControl: {fileID: 445117952}
   m_MessageText: {fileID: 1174213238}
 --- !u!1 &2027298748
