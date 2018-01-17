@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
         agentManager = GetComponent<AgentManager>();
         agentManager.InitAgents(m_NumTargets);
 
+
         stopWatch = Stopwatch.StartNew();
         genetique = new Genetique(4, 1000, 0.5f);
 
@@ -47,7 +48,7 @@ public class GameManager : MonoBehaviour
     {
         ScoreGUI scoreGui = GetComponent<ScoreGUI>();
 
-        scoreGui.m_AgentManager = agentManager;
+        scoreGui.m_Tank = agentManager.m_Tanks;
     }
 
     // On set la camera pour voir tank + targets
