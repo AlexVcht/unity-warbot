@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Runtime.ConstrainedExecution;
+﻿using System.Collections;
 using UnityEngine;
 
 public abstract class BougerRandom : Action
@@ -13,7 +11,19 @@ public abstract class BougerRandom : Action
 
     public abstract override IEnumerator execute(Connaissances connaissances);
 
-    public abstract override void mutate();
+    public override void mutate(float iMutation)
+    {
+        float r = Random.Range(0, 1);
+        if(r < iMutation)
+        {
+            direction = getRandomDirection();
+        }
+        r = Random.Range(0, 1);
+        if (r < iMutation)
+        {
+            duree = getRandomDuree();
+        }
+    }
 
     public Quaternion getDirection()
     {
@@ -23,5 +33,15 @@ public abstract class BougerRandom : Action
     public void setDirection(Quaternion p_direction)
     {
         direction = p_direction;
+    }
+
+    public static int getRandomDuree()
+    {
+        return (int)(Random.Range(0, 3));
+    }
+
+    public static Quaternion getRandomDirection()
+    {
+        return Quaternion.Euler(0, (int)(Random.Range(0, 360)), 0);
     }
 }

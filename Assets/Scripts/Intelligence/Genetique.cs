@@ -1,53 +1,70 @@
-﻿
-using System.Diagnostics;
+﻿using System;
 
 public class Genetique
 {
-    private Action[] tireur;
-    private Action[] eclaireur;
+    private int tailleADN;
+    private float indiceMutation;
+    private int taillePopulation;
+    private Squad[] population;
+    private int[] bestIndices;
+    private int cursor;
 
-    private float idxCrossover, idxMutation;
-
-    public Action[] getActionsTireur()
+    public Genetique(int p_taillePopulation, int p_tailleADN, float p_indiceMutation)
     {
-        return tireur;
-    }
+        cursor = 0;
+        indiceMutation = p_indiceMutation;
+        bestIndices = new int[p_taillePopulation / 2];
 
-    public Action[] getActionsEclaireur()
-    {
-        return eclaireur;
-    }
-
-    public Genetique(int tailleADN, float indiceCrossover, float indiceMutation)
-    {
-        tireur = new Action[tailleADN];
-        for(int i = 0; i < tailleADN; i ++)
+        population = new Squad[p_taillePopulation];
+        for (int p = 0; p < population.Length; p++)
         {
-            tireur[i] = Action.actionAleatoire(true);
+            population[p] = new Squad(p_tailleADN);
         }
-
-        eclaireur = new Action[tailleADN];
-        for (int i = 0; i < tailleADN; i++)
-        {
-            eclaireur[i] = Action.actionAleatoire(false);
-        }
-
-        idxCrossover = indiceCrossover;
-        idxMutation = indiceMutation;
     }
 
     public void makeNextGeneration()
     {
+        // Select N/2 meilleurs
+        for (int i = 0; i < bestIndices.Length; i++)
+            bestIndices[i] = -1;
+        int bestIndice = 0;
+        for(int bi = 0; bi < bestIndices.Length; bi++)
+        {
+            for (int p = 0; p < population.Length; p++)
+            {
+                if(!Array.Exists(bestIndices, e => e==bestIndice) && population[p].score >= population[bestIndice].score)
+                    bestIndice = p;
+            }
+            bestIndices[bi] = bestIndice;
+        }
 
+        // Make them reproduce (mutate & crossover => new one)
+
+        for (int p = 0; p < population.Length; p++)
+        {
+            if (!Array.Exists(bestIndices, e => e == p))
+            {
+                Squad male = population[bestIndices[UnityEngine.Random.Range(0, bestIndices.Length)]];
+                Squad female = population[bestIndices[UnityEngine.Random.Range(0, bestIndices.Length)]];
+                population[p] = Squad.crossover(male, female);
+                population[p].mutate(indiceMutation);
+            }
+        }
+
+        cursor = 0;
     }
 
-    public void crossover()
+    public Squad nextSquad()
     {
-
+        if(cursor >= population.Length)
+        {
+            return null;
+        }
+        return population[cursor++];
     }
 
-    public void mutate()
+    public bool hasNext()
     {
-
-    } 
+        return cursor < population.Length;
+    }
 }

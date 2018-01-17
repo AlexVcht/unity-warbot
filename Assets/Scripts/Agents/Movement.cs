@@ -84,15 +84,12 @@ public abstract class Movement : MonoBehaviour
 
     public IEnumerator LectureADN()
     {
-        int iterator = 0;
-
         foreach (ActionGame actionGame in ADN)
         {
             // Si une fois que c'est fini qu'est ce qui se passe ?
             yield return StartCoroutine(actionGame.execute(connaissances));
-
-            iterator++;
         }
+        yield return null;
     }
 
     public IEnumerator BougerRandom(float duree, Quaternion direction)
