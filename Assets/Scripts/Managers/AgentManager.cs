@@ -65,7 +65,14 @@ public class AgentManager : MonoBehaviour
 
         for (int i = 0; i < m_nbreTargets; i++)
         {
-            Vector3 position = new Vector3(Random.Range(-35.0f, 35.0f), 0f, Random.Range(-35.0f, 35.0f));
+            float x = Random.Range(-35.0f, 35.0f), y = Random.Range(-35.0f, 35.0f);
+
+            if (x <= Math.Abs(x))
+                x += 15;
+            if (y <= Math.Abs(y))
+                y += 15;
+
+            Vector3 position = new Vector3(x, 0f, y);
             Quaternion quaternion = Quaternion.identity;
 
             m_Targets[i] = Instantiate(m_TargetPrefab, position, quaternion) as GameObject;

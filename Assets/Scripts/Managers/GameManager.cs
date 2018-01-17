@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
         agentManager = GetComponent<AgentManager>();
         agentManager.InitAgents(m_NumTargets);
 
-        genetique = new Genetique(4, 5, 0.5f);
+        genetique = new Genetique(100, 5, 0.5f);
 
         SetScoreUI();
 
