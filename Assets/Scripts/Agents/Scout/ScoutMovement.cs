@@ -11,6 +11,11 @@ public class ScoutMovement : Movement
         m_Speed = 10f;
     }
 
+    public override IEnumerator DestroyIt(Rigidbody targetRigodbody)
+    {
+        throw new System.NotImplementedException();
+    }
+
     /*private IEnumerator Move()
     {
         Debug.Log("Move");

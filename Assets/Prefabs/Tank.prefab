@@ -889,13 +889,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PlayerNumber: 1
   m_Speed: 6
-  m_TurnSpeed: 180
+  m_RaduisDetection: 15
   m_MovementAudio: {fileID: 82671774547405974}
   m_EngineIdling: {fileID: 8300000, guid: 4932ab25b84dd7649b80af68a9660ddc, type: 3}
   m_EngineDriving: {fileID: 8300000, guid: d7ca9fb5aa30155449192b23d7fb3336, type: 3}
   m_PitchRange: 0.2
-  m_Targets: []
-  m_TargetToKill: {fileID: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!114 &114375628986492108
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1000,7 +1001,6 @@ MonoBehaviour:
     m_Instance: {fileID: 0}
     m_Wins: 0
     m_TargetsKilled: 0
-    targets: []
   m_CurrentLaunchForce: 0
 --- !u!114 &114705119797541904
 MonoBehaviour:
