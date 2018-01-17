@@ -13,13 +13,6 @@ public class AgentManager : MonoBehaviour
     public GameObject m_PathfinderPrefab;
     public GameObject m_TargetPrefab;
 
-    private Genetique genetique;
-
-    public TankManager GetTankManager()
-    {
-        return m_Tanks;
-    }
-
     public void InitAgents(int nbreTargets)
     {
         SpawnAllTargets(nbreTargets);

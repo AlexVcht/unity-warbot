@@ -17,9 +17,9 @@ public class GameManager : MonoBehaviour
 
     private Stopwatch stopWatch;
     private int m_RoundNumber;
+    private int m_GenerationNumber;
     private WaitForSeconds m_StartWait;
     private WaitForSeconds m_EndWait;
-    private TankManager m_RoundWinner;
     private ScoreGUI scoreGUI;
     private AgentManager agentManager;
     private Genetique genetique;
@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
         agentManager.InitAgents(m_NumTargets);
 
         stopWatch = Stopwatch.StartNew();
-        genetique = new Genetique(4, 5, 0.5f);
+        genetique = new Genetique(4, 1000, 0.5f);
 
         SetScoreUI();
 
@@ -113,10 +113,9 @@ public class GameManager : MonoBehaviour
         m_CameraControl.SetStartPositionAndSize();
 
         m_RoundNumber++;
-        m_MessageText.text = "Generation " + m_RoundNumber;
+        m_MessageText.text = "Generation "+m_GenerationNumber+" Squad " + m_RoundNumber;
 
         agentManager.setIntelligence(squad.tireur, squad.eclaireur, connaissances);
-        UnityEngine.Debug.Log("Round starting : "+ m_RoundNumber);
 
         yield return m_StartWait;
     }
@@ -131,7 +130,7 @@ public class GameManager : MonoBehaviour
         while (IsTargetsAlive() >= 1 && stopWatch.ElapsedMilliseconds <= maxTimeSimul)
         {
             // Meme si je met 15 * 1000 = 15s ca dure 30000 = 30s ...
-            RespawnTanksIfDead();
+           // RespawnTanksIfDead();
             yield return null;
         }
         stopWatch.Stop();

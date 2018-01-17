@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public abstract class Movement : MonoBehaviour
 {
@@ -18,6 +17,8 @@ public abstract class Movement : MonoBehaviour
     protected float m_OriginalPitch;
     protected ActionGame[] ADN;
     protected Connaissances connaissances;
+
+    private bool disabled = true;
 
     public void setADN(ActionGame[] adn)
     {
@@ -39,18 +40,21 @@ public abstract class Movement : MonoBehaviour
         m_Rigidbody.isKinematic = false;
 
         m_MovementInputValue = 1f;
+
+        disabled = false;
+
+        StartCoroutine(LectureADN());
     }
 
     protected void OnDisable()
     {
         m_Rigidbody.isKinematic = true;
+        disabled = true;
     }
 
     protected void Start()
     {
         m_OriginalPitch = m_MovementAudio.pitch;
-
-        StartCoroutine(LectureADN());
     }
 
     // Running every frame
@@ -84,12 +88,18 @@ public abstract class Movement : MonoBehaviour
 
     public IEnumerator LectureADN()
     {
-        foreach (ActionGame actionGame in ADN)
+        while (true)
         {
-            // Si une fois que c'est fini qu'est ce qui se passe ?
-            yield return StartCoroutine(actionGame.execute(connaissances));
+            foreach (ActionGame actionGame in ADN)
+            {
+                if (disabled)
+                {
+                    UnityEngine.Debug.Log("Disabled => break");
+                    yield return null;
+                }
+                yield return StartCoroutine(actionGame.execute(connaissances));
+            }
         }
-        yield return null;
     }
 
     public IEnumerator BougerRandom(float duree, Quaternion direction)
