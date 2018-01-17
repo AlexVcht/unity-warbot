@@ -7,10 +7,10 @@ using System.Diagnostics;
 
 public class GameManager : MonoBehaviour
 {
-    public int m_NumTargets = 5;
+    public int m_NumTargets = 10;
     public float m_StartDelay = 2f;
     public float m_EndDelay = 2f;
-    public long maxTimeSimul = 15 * 1000; // 2min * 60s * 1000ms
+    public long maxTimeSimul = 90 * 1000; // 1min30s
     public CameraControl m_CameraControl;
     public Text m_MessageText;
 
@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
         agentManager.InitAgents(m_NumTargets);
 
         stopWatch = Stopwatch.StartNew();
-        genetique = new Genetique(4, 500, 0.5f);
+        genetique = new Genetique(40, 500, 0.3f);
 
         SetScoreUI();
 
@@ -137,7 +137,7 @@ public class GameManager : MonoBehaviour
         }
         stopWatch.Stop();
         // Get the elapsed time as a TimeSpan value.
-        squad.score = (maxTimeSimul - stopWatch.ElapsedMilliseconds) / maxTimeSimul + (m_NumTargets - IsTargetsAlive()) / m_NumTargets;
+        squad.score = ((maxTimeSimul - stopWatch.ElapsedMilliseconds)*1000 / maxTimeSimul + (m_NumTargets - IsTargetsAlive()) * 1000 / m_NumTargets);
     }
 
     private IEnumerator RoundEnding()

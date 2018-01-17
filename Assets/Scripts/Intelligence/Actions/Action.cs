@@ -30,14 +30,16 @@ public abstract class Action : ActionGame, ActionGenetique
 
     internal static Action actionAleatoire(bool isTank)
     {
-        int nbActionsPossible = 1;
-        float choix = Random.Range(0,nbActionsPossible);
+        float choix = Random.Range(0,2);
         if(choix < 1)
         {
             if (isTank)
                 return BougerRandomTank.createRandom();
             else
                 return BougerRandomScout.createRandom(); 
+        }else if(choix < 2)
+        {
+            return MoveToTarget.createRandom();
         }
         throw new NotImplementedException();
     }
@@ -46,8 +48,8 @@ public abstract class Action : ActionGame, ActionGenetique
 
     public abstract void mutate(float iMutation);
 
-    public long getDuree()
+    public static float getRandomFrequence()
     {
-        return duree;
+        return Random.Range(0, 1);
     }
 }

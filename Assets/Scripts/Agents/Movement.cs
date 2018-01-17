@@ -130,6 +130,21 @@ public abstract class Movement : MonoBehaviour
         }
     }
 
+    public IEnumerator moveToTarget(Transform toGo)
+    {
+        m_Rigidbody.transform.LookAt(toGo);
+
+        Vector3 movement = new Vector3();
+
+        // On le met a la bonne distance
+        while ((m_Rigidbody.transform.position - toGo.position).magnitude > 14f)
+        {
+            movement = transform.forward * m_MovementInputValue * m_Speed * Time.deltaTime;
+            m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
+            yield return null;
+        }
+    }
+
     public abstract IEnumerator DestroyIt(Rigidbody targetRigodbody);
 
     public Rigidbody DetectTargetsAround()
