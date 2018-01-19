@@ -21,7 +21,8 @@ public class MoveToTarget : Action
 
     public override IEnumerator execute(Connaissances connaissances)
     {
-        Transform t = choixCible.compare(connaissances, tank.transform);
+        Debug.Log((tank == null ? "Scout" : "Tank") + " MoveToTarget");
+        Transform t = choixCible.compare(connaissances, tank.transform, closest, insertedWhen);
         if (t)
             yield return tank.moveToTarget(t);
         else
@@ -45,5 +46,10 @@ public class MoveToTarget : Action
         {
             choixCible = ChoixCibleAlgorithmes.getRandomAlgo();
         }
+    }
+
+    public override string ToString()
+    {
+        return "MoveToTarget(" + closest + ";" + insertedWhen+ ";"+choixCible+")";
     }
 }

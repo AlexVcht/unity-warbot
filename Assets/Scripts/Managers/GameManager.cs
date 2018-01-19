@@ -9,9 +9,9 @@ public class GameManager : MonoBehaviour
     public int m_NumTargets = 10;
     public float m_StartDelay = 2f;
     public float m_EndDelay = 2f;
-    public long maxTimeSimul = 90 * 1000; // 1min30s
+    [HideInInspector] public long maxTimeSimul = 30 * 1000; // 1min30s
     public CameraControl m_CameraControl;
-    public Text m_MessageText;
+    [HideInInspector] public Text m_MessageText;
 
     private Stopwatch stopWatch;
     private int m_RoundNumber;
@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
         agentManager.InitAgents(m_NumTargets);
 
         stopWatch = Stopwatch.StartNew();
-        genetique = new Genetique(5, 500, 0.3f);
+        genetique = new Genetique(10, 100, 0.3f);
 
         SetScoreUI();
 

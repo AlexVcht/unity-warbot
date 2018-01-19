@@ -37,11 +37,16 @@ public abstract class BougerRandom : Action
 
     public static int getRandomDuree()
     {
-        return (int)(Random.Range(0, 5));
+        return Random.Range(1, 5);
     }
 
     public static Quaternion getRandomDirection()
     {
-        return Quaternion.Euler(0, (int)(Random.Range(0, 360)), 0);
+        return Quaternion.Euler(0, Random.Range(0, 360), 0);
+    }
+
+    public override string ToString()
+    {
+        return "BougerRandom("+duree+";"+direction.y+")";
     }
 }

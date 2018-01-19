@@ -8,7 +8,7 @@ public class AgentManager : MonoBehaviour
 {
     public TankManager m_Tanks;
     public ScoutManager m_Scouts;
-    public GameObject[] m_Targets;
+    [HideInInspector] public GameObject[] m_Targets;
     public GameObject m_TankPrefab;
     public GameObject m_PathfinderPrefab;
     public GameObject m_TargetPrefab;

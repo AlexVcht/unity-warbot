@@ -31,13 +31,13 @@ public abstract class Action : ActionGame, ActionGenetique
     internal static Action actionAleatoire(bool isTank)
     {
         float choix = Random.Range(0,2);
-        if(choix < 1)
+        if(choix == 0)
         {
             if (isTank)
                 return BougerRandomTank.createRandom();
             else
                 return BougerRandomScout.createRandom(); 
-        }else if(choix < 2)
+        }else if(choix == 1)
         {
             return MoveToTarget.createRandom();
         }
@@ -50,6 +50,6 @@ public abstract class Action : ActionGame, ActionGenetique
 
     public static float getRandomFrequence()
     {
-        return Random.Range(0, 1);
+        return Random.Range(0f, 1f);
     }
 }

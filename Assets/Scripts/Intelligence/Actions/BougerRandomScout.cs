@@ -14,6 +14,7 @@ public class BougerRandomScout : BougerRandom
 
     public override IEnumerator execute(Connaissances connaissances)
     {
+        Debug.Log("Scout BougerRandom");
         yield return scout.BougerRandom(duree, direction);
     }
 }
