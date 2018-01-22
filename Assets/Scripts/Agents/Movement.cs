@@ -11,6 +11,7 @@ public abstract class Movement : MonoBehaviour
     public AudioClip m_EngineDriving;
     public float m_PitchRange = 0.2f;
     public LayerMask m_LayerMask;
+    public string m_nameObject;
 
     protected Rigidbody m_Rigidbody;
     protected float m_MovementInputValue;
@@ -44,6 +45,7 @@ public abstract class Movement : MonoBehaviour
         disabled = false;
 
         StartCoroutine(LectureADN());
+        StartCoroutine(CheckAround());
     }
 
     protected void OnDisable()
@@ -86,23 +88,37 @@ public abstract class Movement : MonoBehaviour
         }
     }
 
+    public IEnumerator CheckAround()
+    {
+        while (!disabled)
+        {
+            Rigidbody rigidbodyTmp = DetectTargetsAround();
+            if (rigidbodyTmp != null)
+            {
+                if (m_nameObject.Equals("SCOUT"))
+                    yield return StartCoroutine(PutInConnaissances(rigidbodyTmp));
+                else if (m_nameObject.Equals("TANK"))
+                    yield return StartCoroutine(DestroyIt(rigidbodyTmp));
+            }
+
+            yield return new WaitForSeconds(0.3f);
+        }
+    }
+
     public IEnumerator LectureADN()
     {
-        if(ADN == null)
+        if (ADN == null)
         {
             yield return null;
         }
-        while (true)
+        while (!disabled)
         {
             foreach (ActionGame actionGame in ADN)
             {
-                if (disabled)
-                {
-                    break;
-                }
+                if (disabled) break;
+
                 yield return StartCoroutine(actionGame.execute(connaissances));
             }
-            if (disabled) break;
         }
     }
 
@@ -120,13 +136,6 @@ public abstract class Movement : MonoBehaviour
 
             m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
 
-            Rigidbody rigidbodyTmp = DetectTargetsAround();
-            if(rigidbodyTmp != null)
-            {
-                yield return StartCoroutine(DestroyIt(rigidbodyTmp));
-                yield return StartCoroutine(PutInConnaissances(rigidbodyTmp));
-            }
-
             yield return null;
         }
     }
@@ -138,7 +147,7 @@ public abstract class Movement : MonoBehaviour
         Vector3 movement = new Vector3();
 
         // On le met a la bonne distance
-        while ((m_Rigidbody.transform.position - toGo.position).magnitude > 14f)
+        while ((m_Rigidbody.transform.position - toGo.position).magnitude > 10f)
         {
             movement = transform.forward * m_MovementInputValue * m_Speed * Time.deltaTime;
             m_Rigidbody.MovePosition(m_Rigidbody.position + movement);

@@ -1580,15 +1580,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18e521b6f8588c44f9e68c769421eb47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
-  m_NumRoundsToWin: 5
-  m_NumTargets: 20
-=======
-  m_NumTargets: 10
->>>>>>> e3e70a2f5d2df83cb7d6a3126c417b097c9955bc
+  m_NumTargets: 5
   m_StartDelay: 2
   m_EndDelay: 2
-  maxTimeSimul: 15000
+  maxTimeSimul: 30000
   m_CameraControl: {fileID: 445117952}
   m_MessageText: {fileID: 1174213238}
 --- !u!1 &2027298748

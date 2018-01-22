@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public int m_NumTargets = 10;
     public float m_StartDelay = 2f;
     public float m_EndDelay = 2f;
-    [HideInInspector] public long maxTimeSimul = 30 * 1000; // 1min30s
+    public long maxTimeSimul = 60 * 1000; // 1min30s
     public CameraControl m_CameraControl;
     [HideInInspector] public Text m_MessageText;
 
@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     private ScoreGUI scoreGUI;
     private AgentManager agentManager;
     private Genetique genetique;
+    private Connaissances connaissances;
     private Squad squad;
 
     private void Start()
@@ -30,9 +31,11 @@ public class GameManager : MonoBehaviour
  
         agentManager = GetComponent<AgentManager>();
         agentManager.InitAgents(m_NumTargets);
+        DisableControl();
 
         stopWatch = Stopwatch.StartNew();
         genetique = new Genetique(4, 50, 0.5f);
+        connaissances = new Connaissances();
 
         SetScoreUI();
 
@@ -75,8 +78,8 @@ public class GameManager : MonoBehaviour
         genetique.makeNextGeneration();
 
         while (genetique.hasNext())
-        { 
-            Connaissances connaissances = new Connaissances();
+        {
+            connaissances.Reset();
             squad = genetique.nextSquad();
 
             stopWatch.Reset();
@@ -114,7 +117,7 @@ public class GameManager : MonoBehaviour
         m_CameraControl.SetStartPositionAndSize();
 
         m_RoundNumber++;
-        m_MessageText.text = "Generation "+m_GenerationNumber+" Squad " + m_RoundNumber;
+        m_MessageText.text = "Generation "+ m_GenerationNumber+" Squad " + m_RoundNumber;
 
         agentManager.setIntelligence(squad.tireur, squad.eclaireur, connaissances);
 

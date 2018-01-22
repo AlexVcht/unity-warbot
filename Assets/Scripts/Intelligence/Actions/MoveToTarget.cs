@@ -24,7 +24,10 @@ public class MoveToTarget : Action
         Debug.Log((tank == null ? "Scout" : "Tank") + " MoveToTarget");
         Transform t = choixCible.compare(connaissances, tank.transform, closest, insertedWhen);
         if (t)
+        {
+            Debug.Log("Target found : " + t);
             yield return tank.moveToTarget(t);
+        }
         else
             yield return null;
     }

@@ -9,20 +9,22 @@ public class ScoutMovement : Movement
     {
         base.Awake();
         m_Speed = 10f;
+        m_RaduisDetection = 15f;
+        m_nameObject = "SCOUT";
     }
 
     public override IEnumerator DestroyIt(Rigidbody targetRigodbody)
     {
-        throw new System.NotImplementedException();
+        yield return null;
     }
 
     public override IEnumerator PutInConnaissances(Rigidbody targetRigidbody)
-    {
-        Connaissances.Connaissance connaissance = new Connaissances.Connaissance(targetRigidbody);
-        connaissances.connaissances.Add(connaissance);
+    {   
+        if (!connaissances.ContainsCustom(targetRigidbody))
+            connaissances.connaissances.Add(new Connaissances.Connaissance(targetRigidbody));
 
-        Debug.Log(connaissances);
+        Debug.Log("Taille connaissance : " + connaissances.connaissances.Count);
 
-        yield return null;
+        yield return new WaitForSeconds(1f);
     }
 }

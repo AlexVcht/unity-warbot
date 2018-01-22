@@ -36,7 +36,7 @@ public class AgentHealth : MonoBehaviour
     public void TakeDamageAgent(float amount)
     {
         // Adjust the target's current health, update the UI based on the new health and check whether or not the tank is dead.
-        m_CurrentHealth -= amount;
+       // m_CurrentHealth -= amount;
 
         SetHealthUI();
 

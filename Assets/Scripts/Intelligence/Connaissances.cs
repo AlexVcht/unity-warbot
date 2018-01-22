@@ -11,6 +11,36 @@ public class Connaissances
         connaissances = new ArrayList();
     }
 
+    public bool ContainsCustom(Rigidbody rigidbody)
+    {
+        foreach(Connaissance c in connaissances)
+        {
+            if (c.getAgent() == rigidbody)
+                return true;
+        }
+
+        return false;
+    }
+
+    public void RemoveCustom(Rigidbody rigidbody)
+    {
+        Connaissance cTmp = null;
+
+        foreach (Connaissance c in connaissances)
+        {
+            if (c.getAgent() == rigidbody)
+                cTmp = c;
+        }
+
+        if (cTmp != null)
+            connaissances.Remove(cTmp);
+    }
+
+    public void Reset()
+    {
+        connaissances.Clear();
+    }
+
     public class Connaissance
     {
         private readonly Rigidbody agent;

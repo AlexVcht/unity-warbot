@@ -897,6 +897,7 @@ MonoBehaviour:
   m_LayerMask:
     serializedVersion: 2
     m_Bits: 512
+  m_nameObject: 
 --- !u!114 &114375628986492108
 MonoBehaviour:
   m_ObjectHideFlags: 1

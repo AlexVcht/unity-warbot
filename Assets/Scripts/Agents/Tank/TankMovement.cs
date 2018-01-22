@@ -12,37 +12,33 @@ public class TankMovement : Movement
         m_Speed = 5f;
         m_RaduisDetection = 15f;
         m_TankShooting = GetComponent<TankShooting>();
+        m_nameObject = "TANK";
     }
-  
+
     public override IEnumerator DestroyIt(Rigidbody targetRigodbody)
     {
-        // Force minimum
-        float launchForce = 15f;
-
         transform.LookAt(targetRigodbody.transform);
 
         // Tant qu'elle est en vie on tire
         while (targetRigodbody.gameObject.activeSelf)
         {
-            launchForce = 15f;
-
-            while (launchForce < 17f)
-            {
-                launchForce++;
-                m_TankShooting.m_CurrentLaunchForce = launchForce;
-
-                yield return null;
-            }
+            m_TankShooting.m_CurrentLaunchForce = 17f;
 
             m_TankShooting.Fire();
 
             yield return new WaitForSeconds(1f);
         }
+
+        if(!targetRigodbody.gameObject.activeSelf)
+        {
+            connaissances.RemoveCustom(targetRigodbody);
+            Debug.Log("Taille connaissance : " + connaissances.connaissances.Count);
+        }
     }
 
     public override IEnumerator PutInConnaissances(Rigidbody targetRigidbody)
     {
-        throw new System.NotImplementedException();
+        yield return null;
     }
 
     /*private IEnumerator FindTarget()
