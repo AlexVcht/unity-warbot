@@ -2,24 +2,22 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using System;
 using System.Diagnostics;
 
 public class GameManager : MonoBehaviour
 {
-    public int m_NumRoundsToWin = 5;
-    public int m_NumTargets = 5;
+    public int m_NumTargets = 10;
     public float m_StartDelay = 2f;
     public float m_EndDelay = 2f;
-    public long maxTimeSimul = 15 * 1000; // 2min * 60s * 1000ms
+    [HideInInspector] public long maxTimeSimul = 30 * 1000; // 1min30s
     public CameraControl m_CameraControl;
-    public Text m_MessageText;
+    [HideInInspector] public Text m_MessageText;
 
     private Stopwatch stopWatch;
     private int m_RoundNumber;
+    private int m_GenerationNumber;
     private WaitForSeconds m_StartWait;
     private WaitForSeconds m_EndWait;
-    private TankManager m_RoundWinner;
     private ScoreGUI scoreGUI;
     private AgentManager agentManager;
     private Genetique genetique;
@@ -32,7 +30,6 @@ public class GameManager : MonoBehaviour
  
         agentManager = GetComponent<AgentManager>();
         agentManager.InitAgents(m_NumTargets);
-
 
         stopWatch = Stopwatch.StartNew();
         genetique = new Genetique(4, 50, 0.5f);
@@ -49,6 +46,7 @@ public class GameManager : MonoBehaviour
         ScoreGUI scoreGui = GetComponent<ScoreGUI>();
 
         scoreGui.m_Tank = agentManager.m_Tanks;
+        scoreGui.m_Time = stopWatch;
     }
 
     // On set la camera pour voir tank + targets
@@ -72,6 +70,8 @@ public class GameManager : MonoBehaviour
     private IEnumerator GameLoop()
     {
         // Mixage / brassage
+        m_GenerationNumber++;
+        m_RoundNumber = 0;
         genetique.makeNextGeneration();
 
         while (genetique.hasNext())
@@ -114,10 +114,9 @@ public class GameManager : MonoBehaviour
         m_CameraControl.SetStartPositionAndSize();
 
         m_RoundNumber++;
-        m_MessageText.text = "Generation " + m_RoundNumber;
+        m_MessageText.text = "Generation "+m_GenerationNumber+" Squad " + m_RoundNumber;
 
         agentManager.setIntelligence(squad.tireur, squad.eclaireur, connaissances);
-        UnityEngine.Debug.Log("Round starting : "+ m_RoundNumber);
 
         yield return m_StartWait;
     }
@@ -132,12 +131,12 @@ public class GameManager : MonoBehaviour
         while (IsTargetsAlive() >= 1 && stopWatch.ElapsedMilliseconds <= maxTimeSimul)
         {
             // Meme si je met 15 * 1000 = 15s ca dure 30000 = 30s ...
-            RespawnTanksIfDead();
+           // RespawnTanksIfDead();
             yield return null;
         }
         stopWatch.Stop();
         // Get the elapsed time as a TimeSpan value.
-        squad.score = (maxTimeSimul - stopWatch.ElapsedMilliseconds) / maxTimeSimul + (m_NumTargets - IsTargetsAlive()) / m_NumTargets;
+        squad.score = ((maxTimeSimul - stopWatch.ElapsedMilliseconds)*1000 / maxTimeSimul + (m_NumTargets - IsTargetsAlive()) * 1000 / m_NumTargets);
     }
 
     private IEnumerator RoundEnding()

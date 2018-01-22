@@ -4,20 +4,11 @@ using UnityEngine;
 
 public class Connaissances
 {
-    private ArrayList connaissances;
+    public ArrayList connaissances;
 
     public Connaissances()
     {
         connaissances = new ArrayList();
-    }
-
-    public void add(Rigidbody obj)
-    {
-        if(obj == null)
-        {
-            return;
-        }
-        connaissances.Add(new Connaissance(obj));
     }
 
     public class Connaissance

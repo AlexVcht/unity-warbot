@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using UnityEditor;
+﻿using System.Diagnostics;
 using UnityEngine;
 
 public class ScoreGUI : MonoBehaviour
@@ -14,16 +10,14 @@ public class ScoreGUI : MonoBehaviour
 
     public void Awake()
     {
-        m_Time = Stopwatch.StartNew();
+        if (m_Time != null) m_Time.Reset();
     }
 
     public void OnGUI()
     {
         scoreUI = string.Empty;
 
-            scoreUI += "<b>Targets hit</b>" + " : " + m_Tank.m_TargetsKilled + "\n" +
-                       "<b>Time</b> : " + m_Time.ElapsedMilliseconds;
-        
+        scoreUI += "<b>Targets hit</b>" + " : " + m_Tank.m_TargetsKilled + "\n" + "<b>Time</b> : " + m_Time.ElapsedMilliseconds / 1000 + "s";
 
         GUI.Label(new Rect(10, Screen.height - 40, 100, 50), scoreUI);
     }
@@ -32,8 +26,6 @@ public class ScoreGUI : MonoBehaviour
     {
         scoreUI = string.Empty;
 
-            scoreUI += m_Tank.m_ColoredPlayerText + " : " + m_Tank.m_TargetsKilled + "\n" + 
-                " Time : " + m_Time.ElapsedMilliseconds;
-        
+        scoreUI += m_Tank.m_ColoredPlayerText + " : " + m_Tank.m_TargetsKilled + "\n" + " Time : " + m_Time.ElapsedMilliseconds / 1000 + "s";
     }
 }

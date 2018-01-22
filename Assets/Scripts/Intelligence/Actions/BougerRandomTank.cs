@@ -14,6 +14,7 @@ public class BougerRandomTank : BougerRandom
 
     public override IEnumerator execute(Connaissances connaissances)
     {
+        Debug.Log("Tank BougerRandom");
         yield return tank.BougerRandom(duree, direction);
     }
 

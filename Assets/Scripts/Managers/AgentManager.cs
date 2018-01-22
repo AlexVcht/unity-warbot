@@ -8,17 +8,10 @@ public class AgentManager : MonoBehaviour
 {
     public TankManager m_Tanks;
     public ScoutManager m_Scouts;
-    public GameObject[] m_Targets;
+    [HideInInspector] public GameObject[] m_Targets;
     public GameObject m_TankPrefab;
     public GameObject m_PathfinderPrefab;
     public GameObject m_TargetPrefab;
-
-    private Genetique genetique;
-
-    public TankManager GetTankManager()
-    {
-        return m_Tanks;
-    }
 
     public void InitAgents(int nbreTargets)
     {
@@ -62,14 +55,7 @@ public class AgentManager : MonoBehaviour
 
         for (int i = 0; i < m_nbreTargets; i++)
         {
-            float x = Random.Range(-35.0f, 35.0f), y = Random.Range(-35.0f, 35.0f);
-
-            if (x <= Math.Abs(x))
-                x += 15;
-            if (y <= Math.Abs(y))
-                y += 15;
-
-            Vector3 position = new Vector3(x, 0f, y);
+            Vector3 position = new Vector3(Random.Range(-35.0f, 35.0f), 0f, Random.Range(-35.0f, 35.0f));
             Quaternion quaternion = Quaternion.identity;
 
             m_Targets[i] = Instantiate(m_TargetPrefab, position, quaternion) as GameObject;

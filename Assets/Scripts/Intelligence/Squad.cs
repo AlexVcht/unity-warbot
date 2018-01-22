@@ -7,8 +7,9 @@ public class Squad : ActionGenetique
     public Action[] eclaireur;
     public long score;
 
-    public Squad(int tailleADN): this(tailleADN, new Action[0], new Action[0])
+    public Squad(int tailleADN) : this(tailleADN, new Action[0], new Action[0])
     {
+        score = -1;
         for (int a = 0; a < tailleADN; a++)
         {
             tireur[a] = Action.actionAleatoire(true);
@@ -64,5 +65,22 @@ public class Squad : ActionGenetique
         Array.Copy(male, 0, adnChild, 0, iCrossover);
         Array.Copy(female, iCrossover, adnChild, iCrossover, tailleADN - iCrossover);
         return adnChild;
+    }
+
+    public override string ToString()
+    {
+        string s = "score "+ score + "\n";
+        foreach (Action act in tireur)
+        {
+            s += act.ToString() + " ";
+        }
+        s += "\n";
+        foreach (Action act in eclaireur)
+        {
+            s += act.ToString() + " ";
+
+        }
+        s += "\n";
+        return s;
     }
 }

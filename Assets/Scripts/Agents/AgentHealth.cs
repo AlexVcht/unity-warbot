@@ -85,8 +85,6 @@ public class AgentHealth : MonoBehaviour
 
         tankInstance.m_TargetsKilled++;
 
-        Debug.Log("Tank : " + tankInstance + " / targets killed : " + tankInstance.m_TargetsKilled);
-
         m_ExplosionParticles.transform.position = transform.position;
         m_ExplosionParticles.gameObject.SetActive(true);
 
