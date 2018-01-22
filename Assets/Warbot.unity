@@ -1581,7 +1581,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_NumRoundsToWin: 5
-  m_NumTargets: 1
+  m_NumTargets: 20
   m_StartDelay: 2
   m_EndDelay: 2
   maxTimeSimul: 15000

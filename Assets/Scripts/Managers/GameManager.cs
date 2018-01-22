@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
 
 
         stopWatch = Stopwatch.StartNew();
-        genetique = new Genetique(4, 5, 0.5f);
+        genetique = new Genetique(4, 50, 0.5f);
 
         SetScoreUI();
 
