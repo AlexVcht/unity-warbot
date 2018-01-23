@@ -1524,6 +1524,7 @@ MonoBehaviour:
     m_Instance: {fileID: 0}
     m_Wins: 0
     m_TargetsKilled: 0
+    m_Movement: {fileID: 0}
   m_Scouts:
     m_PlayerColor: {r: 0, g: 0.39607844, b: 0.59607846, a: 0}
     m_SpawnPoint: {fileID: 486646573}
@@ -1569,6 +1570,7 @@ MonoBehaviour:
     m_Instance: {fileID: 0}
     m_Wins: 0
     m_TargetsKilled: 0
+    m_Movement: {fileID: 0}
 --- !u!114 &1998659430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1580,9 +1582,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18e521b6f8588c44f9e68c769421eb47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_NumTargets: 5
-  m_StartDelay: 2
-  m_EndDelay: 2
+  m_NumTargets: 10
+  m_StartDelay: 0.5
+  m_EndDelay: 0.5
   maxTimeSimul: 30000
   m_CameraControl: {fileID: 445117952}
   m_MessageText: {fileID: 1174213238}

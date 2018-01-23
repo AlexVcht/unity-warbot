@@ -33,15 +33,14 @@ public class AgentHealth : MonoBehaviour
         SetHealthUI();
     }
 
-    public void TakeDamageAgent(float amount)
+    public void ColorTarget(Rigidbody rigidbody)
     {
-        // Adjust the target's current health, update the UI based on the new health and check whether or not the tank is dead.
-       // m_CurrentHealth -= amount;
+        MeshRenderer[] renderers = rigidbody.GetComponentsInChildren<MeshRenderer>();
 
-        SetHealthUI();
-
-        if (m_CurrentHealth <= 0f && !m_Dead)
-            OnDeathAgent();
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            renderers[i].material.color = Color.blue;
+        }
     }
 
     public void TakeDamageTarget(float amount, TankManager tankInstance)

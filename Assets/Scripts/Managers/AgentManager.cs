@@ -61,9 +61,9 @@ public class AgentManager : MonoBehaviour
             x = Random.Range(-35.0f, 35.0f);
             y = Random.Range(-35.0f, 35.0f);
 
-            while (Math.Abs(x) < 15)
+            while (Math.Abs(x) < 10f)
                 x = Random.Range(-35.0f, 35.0f);
-            while (Math.Abs(y) < 15)
+            while (Math.Abs(y) < 10f)
                 y = Random.Range(-35.0f, 35.0f);
 
             Vector3 position = new Vector3(x, 0f, y);

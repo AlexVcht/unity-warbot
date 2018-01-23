@@ -11,17 +11,20 @@ public class ScoutManager : AgentManagerInterface
     [HideInInspector] public GameObject m_Instance;
 
     private ScoutMovement m_Movement;
+    private Shooting m_Shooting;
     private GameObject m_CanvasGameObject;
 
     public void Setup()
     {
         m_Movement = m_Instance.GetComponent<ScoutMovement>();
         Action.scout = m_Movement;
-        m_Movement.enabled = false;
+
+        m_Shooting = m_Instance.GetComponent<Shooting>();
 
         m_CanvasGameObject = m_Instance.GetComponentInChildren<Canvas>().gameObject;
          
         m_Movement.m_PlayerNumber = m_PlayerNumber;
+        m_Shooting.m_PlayerNumber = m_PlayerNumber;
 
         m_ColoredPlayerText = "<color=#" + ColorUtility.ToHtmlStringRGB(m_PlayerColor) + ">TANK " + m_PlayerNumber +
                               "</color>";

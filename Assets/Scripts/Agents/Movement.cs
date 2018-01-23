@@ -12,6 +12,7 @@ public abstract class Movement : MonoBehaviour
     public float m_PitchRange = 0.2f;
     public LayerMask m_LayerMask;
     public string m_nameObject;
+    public Shooting m_Shooting;
 
     protected Rigidbody m_Rigidbody;
     protected float m_MovementInputValue;
@@ -34,6 +35,7 @@ public abstract class Movement : MonoBehaviour
     protected void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
+        m_Shooting = GetComponent<Shooting>();
     }
 
     protected void OnEnable()
@@ -97,7 +99,7 @@ public abstract class Movement : MonoBehaviour
             if (rigidbodyTmp != null)
             {
                 if (m_nameObject.Equals("SCOUT"))
-                    PutInConnaissances(rigidbodyTmp);
+                    yield return StartCoroutine(PutInConnaissances(rigidbodyTmp));
                 else if (m_nameObject.Equals("TANK"))
                     yield return StartCoroutine(DestroyIt(rigidbodyTmp));
             }
@@ -116,9 +118,6 @@ public abstract class Movement : MonoBehaviour
             foreach (ActionGame actionGame in ADN)
             {
                 if (disabled) break;
-
-                if (m_nameObject.Equals("SCOUT"))
-                    Debug.Log(m_nameObject + " / action : " + actionGame + " / " + Time.deltaTime);
 
                 yield return StartCoroutine(actionGame.execute(connaissances));
             }
@@ -158,8 +157,7 @@ public abstract class Movement : MonoBehaviour
         }
     }
 
-    public abstract void PutInConnaissances(Rigidbody targetRigidbody);
-
+    public abstract IEnumerator PutInConnaissances(Rigidbody targetRigidbody);
     public abstract IEnumerator DestroyIt(Rigidbody targetRigodbody);
 
     public Rigidbody DetectTargetsAround()

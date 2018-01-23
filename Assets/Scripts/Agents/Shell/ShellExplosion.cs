@@ -10,17 +10,18 @@ public class ShellExplosion : MonoBehaviour
     public float m_MaxLifeTime = 2f;
     public float m_ExplosionRadius = 5f;
     public TankManager m_TankInstance;
+    public bool isShell;
 
     private void Start()
     {
         Destroy(gameObject, m_MaxLifeTime);
     }
 
-
     private void OnTriggerEnter(Collider other)
     {
         // Find all the tanks in an area around the shell and damage them.
         Collider[] colliders = Physics.OverlapSphere(transform.position, m_ExplosionRadius, m_TankMask);
+        Debug.Log("collider: "+colliders.Length);
 
         for (int i = 0; i < colliders.Length; i++)
         {
@@ -34,14 +35,18 @@ public class ShellExplosion : MonoBehaviour
             AgentHealth agentHealth = targetRigidbody.GetComponent<AgentHealth>();
             CapsuleCollider capsuleCollider = targetRigidbody.GetComponent<CapsuleCollider>();
 
-            if (!agentHealth)
+            if (agentHealth == null)
                 continue;
 
             float damage = CalculateDamage(targetRigidbody.position);
 
-            if (agentHealth != null && capsuleCollider == null)
-                agentHealth.TakeDamageAgent(damage);
-            else if (agentHealth != null && capsuleCollider != null)
+            Debug.Log("### isshell : " + isShell + " / " + " capsule : " + capsuleCollider);
+
+            if (!isShell && capsuleCollider != null)
+            {
+                agentHealth.ColorTarget(targetRigidbody);
+            }
+            else if (isShell && capsuleCollider != null)
             {
                 agentHealth.TakeDamageTarget(damage, m_TankInstance);
             }

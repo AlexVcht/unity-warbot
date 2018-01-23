@@ -339,7 +339,8 @@ MonoBehaviour:
     m_Instance: {fileID: 0}
     m_Wins: 0
     m_TargetsKilled: 0
-    targets: []
+    m_Movement: {fileID: 0}
+  isShell: 0
 --- !u!136 &136252700999647798
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -413,7 +414,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: -1618902511
+  randomSeed: 686343745
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -3825,7 +3826,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 1870099503
+  randomSeed: -1748829253
   InitialModule:
     serializedVersion: 3
     enabled: 1

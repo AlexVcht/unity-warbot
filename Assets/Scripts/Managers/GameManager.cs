@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
         agentManager.InitAgents(m_NumTargets);
 
         stopWatch = Stopwatch.StartNew();
-        genetique = new Genetique(4, 50, 0.5f);
+        genetique = new Genetique(10, 100, 0.4f);
         connaissances = new Connaissances();
 
         SetScoreUI();
@@ -189,6 +189,12 @@ public class GameManager : MonoBehaviour
         foreach (var target in agentManager.m_Targets)
         {
             target.SetActive(true);
+            MeshRenderer[] renderers = target.GetComponentsInChildren<MeshRenderer>();
+
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                renderers[i].material.color = Color.white;
+            }
         }
     }
 
