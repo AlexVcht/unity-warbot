@@ -93,10 +93,11 @@ public abstract class Movement : MonoBehaviour
         while (!disabled)
         {
             Rigidbody rigidbodyTmp = DetectTargetsAround();
+
             if (rigidbodyTmp != null)
             {
                 if (m_nameObject.Equals("SCOUT"))
-                    yield return StartCoroutine(PutInConnaissances(rigidbodyTmp));
+                    PutInConnaissances(rigidbodyTmp);
                 else if (m_nameObject.Equals("TANK"))
                     yield return StartCoroutine(DestroyIt(rigidbodyTmp));
             }
@@ -108,14 +109,16 @@ public abstract class Movement : MonoBehaviour
     public IEnumerator LectureADN()
     {
         if (ADN == null)
-        {
             yield return null;
-        }
+        
         while (!disabled)
         {
             foreach (ActionGame actionGame in ADN)
             {
                 if (disabled) break;
+
+                if (m_nameObject.Equals("SCOUT"))
+                    Debug.Log(m_nameObject + " / action : " + actionGame + " / " + Time.deltaTime);
 
                 yield return StartCoroutine(actionGame.execute(connaissances));
             }
@@ -155,7 +158,7 @@ public abstract class Movement : MonoBehaviour
         }
     }
 
-    public abstract IEnumerator PutInConnaissances(Rigidbody targetRigidbody);
+    public abstract void PutInConnaissances(Rigidbody targetRigidbody);
 
     public abstract IEnumerator DestroyIt(Rigidbody targetRigodbody);
 

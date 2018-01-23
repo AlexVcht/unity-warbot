@@ -12,7 +12,7 @@ public class TankManager : AgentManagerInterface
     [HideInInspector] public int m_Wins;
     [HideInInspector] public int m_TargetsKilled;
 
-    private TankMovement m_Movement;
+    public TankMovement m_Movement;
     private TankShooting m_Shooting;
     private GameObject m_CanvasGameObject;
 
@@ -20,9 +20,11 @@ public class TankManager : AgentManagerInterface
     {
         m_Movement = m_Instance.GetComponent<TankMovement>();
         Action.tank = m_Movement;
+        m_Movement.enabled = false;
 
         m_Shooting = m_Instance.GetComponent<TankShooting>();
         m_Shooting.m_TankInstance = this;
+        m_Shooting.enabled = false;
 
         m_CanvasGameObject = m_Instance.GetComponentInChildren<Canvas>().gameObject;
 

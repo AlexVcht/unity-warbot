@@ -17,6 +17,7 @@ public class ScoutManager : AgentManagerInterface
     {
         m_Movement = m_Instance.GetComponent<ScoutMovement>();
         Action.scout = m_Movement;
+        m_Movement.enabled = false;
 
         m_CanvasGameObject = m_Instance.GetComponentInChildren<Canvas>().gameObject;
          

@@ -30,16 +30,20 @@ public abstract class Action : ActionGame, ActionGenetique
 
     internal static Action actionAleatoire(bool isTank)
     {
-        float choix = Random.Range(0,2);
-        if(choix == 0)
+        float choix = Random.Range(0, 2);
+        if (choix == 0)
         {
             if (isTank)
                 return BougerRandomTank.createRandom();
             else
-                return BougerRandomScout.createRandom(); 
-        }else if(choix == 1)
+                return BougerRandomScout.createRandom();
+        }
+        else if (choix == 1)
         {
-            return MoveToTarget.createRandom();
+            if (isTank)
+                return MoveToTarget.createRandom();
+            else
+                return BougerRandomScout.createRandom();
         }
         throw new NotImplementedException();
     }

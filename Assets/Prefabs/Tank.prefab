@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 114976762403752130}
   - component: {fileID: 114342422133647440}
   - component: {fileID: 114516506293300474}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Tank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -882,7 +882,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1786049740999704}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29af3199e11b72e47b41ff380db540fd, type: 3}
   m_Name: 
@@ -979,7 +979,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1786049740999704}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06b38fa3f5188f6419ab17bc1669c18c, type: 3}
   m_Name: 
@@ -1002,6 +1002,7 @@ MonoBehaviour:
     m_Instance: {fileID: 0}
     m_Wins: 0
     m_TargetsKilled: 0
+    m_Movement: {fileID: 0}
   m_CurrentLaunchForce: 0
 --- !u!114 &114705119797541904
 MonoBehaviour:

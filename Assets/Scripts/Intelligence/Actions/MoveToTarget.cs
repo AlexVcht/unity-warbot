@@ -21,11 +21,10 @@ public class MoveToTarget : Action
 
     public override IEnumerator execute(Connaissances connaissances)
     {
-        Debug.Log((tank == null ? "Scout" : "Tank") + " MoveToTarget");
         Transform t = choixCible.compare(connaissances, tank.transform, closest, insertedWhen);
         if (t)
         {
-            Debug.Log("Target found : " + t);
+            Debug.Log((tank == null ? "Scout" : "Tank") + " MoveToTarget : " + duree);
             yield return tank.moveToTarget(t);
         }
         else

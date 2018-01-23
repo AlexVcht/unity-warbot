@@ -15,16 +15,13 @@ public class ScoutMovement : Movement
 
     public override IEnumerator DestroyIt(Rigidbody targetRigodbody)
     {
+        Debug.Log("Scout movement - DestroyIt : not good");
         yield return null;
     }
 
-    public override IEnumerator PutInConnaissances(Rigidbody targetRigidbody)
-    {   
+    public override void PutInConnaissances(Rigidbody targetRigidbody)
+    {
         if (!connaissances.ContainsCustom(targetRigidbody))
             connaissances.connaissances.Add(new Connaissances.Connaissance(targetRigidbody));
-
-        Debug.Log("Taille connaissance : " + connaissances.connaissances.Count);
-
-        yield return new WaitForSeconds(1f);
     }
 }

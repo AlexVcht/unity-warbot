@@ -31,7 +31,6 @@ public class GameManager : MonoBehaviour
  
         agentManager = GetComponent<AgentManager>();
         agentManager.InitAgents(m_NumTargets);
-        DisableControl();
 
         stopWatch = Stopwatch.StartNew();
         genetique = new Genetique(4, 50, 0.5f);

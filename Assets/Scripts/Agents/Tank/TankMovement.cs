@@ -29,16 +29,13 @@ public class TankMovement : Movement
             yield return new WaitForSeconds(1f);
         }
 
-        if(!targetRigodbody.gameObject.activeSelf)
-        {
+        if (!targetRigodbody.gameObject.activeSelf && connaissances.ContainsCustom(targetRigodbody))
             connaissances.RemoveCustom(targetRigodbody);
-            Debug.Log("Taille connaissance : " + connaissances.connaissances.Count);
-        }
     }
 
-    public override IEnumerator PutInConnaissances(Rigidbody targetRigidbody)
+    public override void PutInConnaissances(Rigidbody targetRigidbody)
     {
-        yield return null;
+        Debug.Log("Tank movement - PutInConnaissance : not good");
     }
 
     /*private IEnumerator FindTarget()
