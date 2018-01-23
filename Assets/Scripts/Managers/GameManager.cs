@@ -2,35 +2,39 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Diagnostics;
 
 public class GameManager : MonoBehaviour
 {
-    public int m_NumRoundsToWin = 5;
-    public int m_NumTargets = 5;
+    public int m_NumTargets = 10;
     public float m_StartDelay = 2f;
     public float m_EndDelay = 2f;
+    public long maxTimeSimul = 60 * 1000; // 1min30s
     public CameraControl m_CameraControl;
-    public Text m_MessageText;
-    public GameObject m_TankPrefab;
-    public GameObject m_TargetPrefab;
-    public TankManager[] m_Tanks;
+    [HideInInspector] public Text m_MessageText;
 
-
+    private Stopwatch stopWatch;
     private int m_RoundNumber;
+    private int m_GenerationNumber;
     private WaitForSeconds m_StartWait;
     private WaitForSeconds m_EndWait;
-    private TankManager m_RoundWinner;
-    private TankManager m_GameWinner;
-    private GameObject[] targets;
     private ScoreGUI scoreGUI;
+    private AgentManager agentManager;
+    private Genetique genetique;
+    private Connaissances connaissances;
+    private Squad squad;
 
     private void Start()
     {
         m_StartWait = new WaitForSeconds(m_StartDelay);
         m_EndWait = new WaitForSeconds(m_EndDelay);
+ 
+        agentManager = GetComponent<AgentManager>();
+        agentManager.InitAgents(m_NumTargets);
 
-        SpawnAllTargets();
-        SpawnAllTanks();
+        stopWatch = Stopwatch.StartNew();
+        genetique = new Genetique(10, 100, 0.4f);
+        connaissances = new Connaissances();
 
         SetScoreUI();
 
@@ -39,61 +43,25 @@ public class GameManager : MonoBehaviour
         StartCoroutine(GameLoop());
     }
 
-
-    private void SpawnAllTanks()
-    {
-        for (int i = 0; i < m_Tanks.Length; i++)
-        {
-            m_Tanks[i].m_Instance =
-                Instantiate(
-                    m_TankPrefab,
-                    m_Tanks[i].m_SpawnPoint.position,
-                    m_Tanks[i].m_SpawnPoint.rotation
-                ) as GameObject;
-
-            m_Tanks[i].m_PlayerNumber = i + 1;
-            m_Tanks[i].targets = targets;
-            m_Tanks[i].Setup();
-        }
-    }
-
-    private void SpawnAllTargets()
-    {
-        targets = new GameObject[m_NumTargets];
-
-        for (int i = 0; i < m_NumTargets; i++)
-        {
-            Vector3 position = new Vector3(Random.Range(-35.0f, 35.0f), 0f, Random.Range(-35.0f, 35.0f));
-            Quaternion quaternion = Quaternion.identity;
-
-            targets[i] = Instantiate(m_TargetPrefab, position, quaternion) as GameObject;
-            targets[i].SetActive(true);
-        }
-    }
-
     private void SetScoreUI()
     {
         ScoreGUI scoreGui = GetComponent<ScoreGUI>();
 
-        scoreGui.m_Tanks = m_Tanks;
+        scoreGui.m_Tank = agentManager.m_Tanks;
+        scoreGui.m_Time = stopWatch;
     }
 
     // On set la camera pour voir tank + targets
     private void SetCameraTargets()
     {
         int iterator = 0;
-        int size = m_Tanks.Length + m_NumTargets;
+        GameObject[] allGameObjects = agentManager.GetAllGameObjects();
+        int size = allGameObjects.Length;
         Transform[] tranformTargets = new Transform[size];
 
-        foreach (TankManager tank in m_Tanks)
+        foreach (GameObject go in allGameObjects)
         {
-            tranformTargets[iterator] = tank.m_Instance.transform;
-            iterator++;
-        }
-
-        foreach (GameObject target in targets)
-        {
-            tranformTargets[iterator] = target.transform;
+            tranformTargets[iterator] = go.transform;
             iterator++;
         }
 
@@ -103,12 +71,34 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator GameLoop()
     {
-        yield return StartCoroutine(RoundStarting());
-        yield return StartCoroutine(RoundPlaying());
-        yield return StartCoroutine(RoundEnding());
+        // Mixage / brassage
+        m_GenerationNumber++;
+        m_RoundNumber = 0;
+        genetique.makeNextGeneration();
 
-        if (m_GameWinner != null)
+        while (genetique.hasNext())
         {
+            connaissances.Reset();
+            squad = genetique.nextSquad();
+
+            stopWatch.Reset();
+            stopWatch.Start();
+          
+            yield return StartCoroutine(RoundStarting(connaissances));
+            yield return StartCoroutine(RoundPlaying());
+            yield return StartCoroutine(RoundEnding());
+
+            // Le score c'est un long contenant les ms du temps de jeu
+            // Récupérer le score et le mettre dans squad.setScore(score)
+
+            UnityEngine.Debug.Log("FIN DE SQUAD : ");
+        }
+
+        UnityEngine.Debug.Log("FIN DE GENERATION : ");
+
+        if (false)
+        {
+            // Peut etre la fonction reset ici meme
             SceneManager.LoadScene(0);
         }
         else
@@ -118,16 +108,17 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private IEnumerator RoundStarting()
+    private IEnumerator RoundStarting(Connaissances connaissances)
     {
-        ResetAllTargets();
-        ResetAllTanks();
-        DisableTankControl();
+        ResetAll();
+        DisableControl();
 
         m_CameraControl.SetStartPositionAndSize();
 
         m_RoundNumber++;
-        m_MessageText.text = "Generation " + m_RoundNumber;
+        m_MessageText.text = "Generation "+ m_GenerationNumber+" Squad " + m_RoundNumber;
+
+        agentManager.setIntelligence(squad.tireur, squad.eclaireur, connaissances);
 
         yield return m_StartWait;
     }
@@ -135,32 +126,24 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator RoundPlaying()
     {
-        EnableTankControl();
+        EnableControl();
 
         m_MessageText.text = string.Empty;
 
-        while (!IsTargetsAlive())
+        while (IsTargetsAlive() >= 1 && stopWatch.ElapsedMilliseconds <= maxTimeSimul)
         {
-            RespawnTanksIfDead();
+            // Meme si je met 15 * 1000 = 15s ca dure 30000 = 30s ...
+           // RespawnTanksIfDead();
             yield return null;
         }
+        stopWatch.Stop();
+        // Get the elapsed time as a TimeSpan value.
+        squad.score = ((maxTimeSimul - stopWatch.ElapsedMilliseconds)*1000 / maxTimeSimul + (m_NumTargets - IsTargetsAlive()) * 1000 / m_NumTargets);
     }
-
 
     private IEnumerator RoundEnding()
     {
-        DisableTankControl();
-
-        m_RoundWinner = null;
-
-        m_RoundWinner = GetRoundWinner();
-
-        if (m_RoundWinner != null)
-        {
-            m_RoundWinner.m_Wins++;
-        }
-
-        m_GameWinner = GetGameWinner();
+        DisableControl();
 
         string message = EndMessage();
         m_MessageText.text = message;
@@ -169,110 +152,62 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private bool IsTargetsAlive()
+    private int IsTargetsAlive()
     {
         int nbTargetsAlive = 0;
 
-        for (int i = 0; i < targets.Length; i++)
+        for (int i = 0; i < agentManager.m_Targets.Length; i++)
         {
-            if (targets[i].activeSelf)
+            if (agentManager.m_Targets[i].activeSelf)
                 nbTargetsAlive++;
         }
 
-        return nbTargetsAlive < 1;
+        return nbTargetsAlive;
     }
 
     private void RespawnTanksIfDead()
     {
-        foreach (TankManager tank in m_Tanks)
+        if (!agentManager.m_Tanks.m_Instance.activeSelf)
         {
-            if (!tank.m_Instance.activeSelf)
+            if (agentManager.m_Tanks.m_TargetsKilled > 0)
+                agentManager.m_Tanks.m_TargetsKilled--;
+            agentManager.m_Tanks.Reset();
+        }
+    }
+
+    private string EndMessage()
+    {
+        string message = agentManager.m_Tanks.m_ColoredPlayerText + " hit " + agentManager.m_Tanks.m_TargetsKilled + " targets !";
+        return message;
+    }
+
+    private void ResetAll()
+    {
+        agentManager.m_Tanks.Reset();
+        agentManager.m_Scouts.Reset();
+
+        foreach (var target in agentManager.m_Targets)
+        {
+            target.SetActive(true);
+            MeshRenderer[] renderers = target.GetComponentsInChildren<MeshRenderer>();
+
+            for (int i = 0; i < renderers.Length; i++)
             {
-                if (tank.m_TargetsKilled > 0)
-                    tank.m_TargetsKilled--;
-                tank.Reset();
+                renderers[i].material.color = Color.white;
             }
         }
     }
 
-    private TankManager GetRoundWinner()
+    private void EnableControl()
     {
-        TankManager tankWinner = null;
-
-        for (int i = 0; i < m_Tanks.Length - 1; i++)
-        {
-            if (m_Tanks[i].m_TargetsKilled > m_Tanks[i + 1].m_TargetsKilled)
-                tankWinner = m_Tanks[i];
-        }
-
-        return tankWinner;
+        agentManager.m_Tanks.EnableControl();
+        agentManager.m_Scouts.EnableControl();
     }
 
 
-    private TankManager GetGameWinner()
+    private void DisableControl()
     {
-        for (int i = 0; i < m_Tanks.Length; i++)
-        {
-            if (m_Tanks[i].m_Wins == m_NumRoundsToWin)
-                return m_Tanks[i];
-        }
-
-        return null;
-    }
-
-
-    private string EndMessage()
-    {
-        string message = "DRAW!";
-
-        if (m_RoundWinner != null)
-            message = m_RoundWinner.m_ColoredPlayerText + " WINS THE ROUND!";
-
-        message += "\n\n\n\n";
-
-        for (int i = 0; i < m_Tanks.Length; i++)
-        {
-            message += m_Tanks[i].m_ColoredPlayerText + ": " + m_Tanks[i].m_Wins + " WINS\n";
-        }
-
-        if (m_GameWinner != null)
-            message = m_GameWinner.m_ColoredPlayerText + " WINS THE GAME!";
-
-        return message;
-    }
-
-    private void ResetAllTanks()
-    {
-        for (int i = 0; i < m_Tanks.Length; i++)
-        {
-            m_Tanks[i].Reset();
-        }
-    }
-
-    private void ResetAllTargets()
-    {
-        foreach (var target in targets)
-        {
-            Vector3 position = new Vector3(Random.Range(-35.0f, 35.0f), 0f, Random.Range(-35.0f, 35.0f));
-            target.transform.position = position;
-            target.SetActive(true);
-        }
-    }
-
-    private void EnableTankControl()
-    {
-        for (int i = 0; i < m_Tanks.Length; i++)
-        {
-            m_Tanks[i].EnableControl();
-        }
-    }
-
-
-    private void DisableTankControl()
-    {
-        for (int i = 0; i < m_Tanks.Length; i++)
-        {
-            m_Tanks[i].DisableControl();
-        }
+        agentManager.m_Tanks.DisableControl();
+        agentManager.m_Scouts.DisableControl();
     }
 }
