@@ -56,17 +56,18 @@ public class AgentManager : MonoBehaviour
         float x = 0;
         float y = 0;
 
+        float d;
+        Vector3 zero =new Vector3(0, 0, 0);
         for (int i = 0; i < m_nbreTargets; i++)
         {
-            x = Random.Range(-35.0f, 35.0f);
-            y = Random.Range(-35.0f, 35.0f);
-
-            while (Math.Abs(x) < 10f)
+            do
+            {
                 x = Random.Range(-35.0f, 35.0f);
-            while (Math.Abs(y) < 10f)
                 y = Random.Range(-35.0f, 35.0f);
-
-            Vector3 position = new Vector3(x, 0f, y);
+                d = Vector3.Distance(zero, new Vector3(x, 0, y));
+            } while(d < 8f);
+            
+            Vector3 position = new Vector3(x, 0, y);
             Quaternion quaternion = Quaternion.identity;
 
             m_Targets[i] = Instantiate(m_TargetPrefab, position, quaternion) as GameObject;
