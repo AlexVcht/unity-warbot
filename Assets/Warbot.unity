@@ -1517,8 +1517,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Tanks:
-    m_PlayerColor: {r: 0, g: 0.39705884, b: 0.5955882, a: 0}
     m_SpawnPoint: {fileID: 465937495}
+    m_PlayerColor: {r: 0, g: 0.39705884, b: 0.5955882, a: 0}
     m_PlayerNumber: 0
     m_ColoredPlayerText: 
     m_Instance: {fileID: 0}
@@ -1526,8 +1526,8 @@ MonoBehaviour:
     m_TargetsKilled: 0
     m_Movement: {fileID: 0}
   m_Scouts:
-    m_PlayerColor: {r: 0, g: 0.39607844, b: 0.59607846, a: 0}
     m_SpawnPoint: {fileID: 486646573}
+    m_PlayerColor: {r: 0, g: 0.39607844, b: 0.59607846, a: 0}
     m_PlayerNumber: 0
     m_ColoredPlayerText: 
     m_Instance: {fileID: 0}
@@ -1563,8 +1563,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Tank:
-    m_PlayerColor: {r: 0, g: 0, b: 0, a: 0}
     m_SpawnPoint: {fileID: 0}
+    m_PlayerColor: {r: 0, g: 0, b: 0, a: 0}
     m_PlayerNumber: 0
     m_ColoredPlayerText: 
     m_Instance: {fileID: 0}
@@ -1582,7 +1582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18e521b6f8588c44f9e68c769421eb47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_NumTargets: 100
+  m_NumTargets: 10
   m_StartDelay: 0.5
   m_EndDelay: 0.5
   maxTimeSimul: 30000

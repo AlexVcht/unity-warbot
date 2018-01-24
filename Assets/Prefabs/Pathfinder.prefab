@@ -331,7 +331,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1373027633221914}
   m_LocalRotation: {x: 0.08715596, y: -0, z: -0, w: -0.9961947}
-  m_LocalPosition: {x: 0, y: 1.7, z: 1.35}
+  m_LocalPosition: {x: 0, y: 0.92, z: 1.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4508553640651592}
@@ -801,6 +801,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   m_nameObject: 
+  m_Shooting: {fileID: 0}
 --- !u!114 &114081914184427782
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1042,8 +1043,8 @@ MonoBehaviour:
   m_ChargingClip: {fileID: 8300000, guid: c17f124fcdc0f5446a72f793898bd74b, type: 3}
   m_FireClip: {fileID: 8300000, guid: 672a9941361ad494a99fba36759eca80, type: 3}
   m_TankInstance:
-    m_PlayerColor: {r: 0, g: 0, b: 0, a: 0}
     m_SpawnPoint: {fileID: 0}
+    m_PlayerColor: {r: 0, g: 0, b: 0, a: 0}
     m_PlayerNumber: 0
     m_ColoredPlayerText: 
     m_Instance: {fileID: 0}

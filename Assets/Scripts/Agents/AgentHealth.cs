@@ -39,7 +39,7 @@ public class AgentHealth : MonoBehaviour
 
         for (int i = 0; i < renderers.Length; i++)
         {
-            renderers[i].material.color = Color.blue;
+            renderers[i].material.color = Color.gray;
         }
     }
 

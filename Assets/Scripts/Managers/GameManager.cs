@@ -177,12 +177,17 @@ public class GameManager : MonoBehaviour
 
     private string EndMessage()
     {
-        string message = agentManager.m_Tanks.m_ColoredPlayerText + " hit " + agentManager.m_Tanks.m_TargetsKilled + " targets !";
+        string message = "Squad hit " + agentManager.m_Tanks.m_TargetsKilled + " targets !";
         return message;
     }
 
     private void ResetAll()
     {
+        Color color = new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f));
+
+        agentManager.m_Scouts.m_PlayerColor = color;
+        agentManager.m_Tanks.m_PlayerColor = color;
+
         agentManager.m_Tanks.Reset();
         agentManager.m_Scouts.Reset();
 

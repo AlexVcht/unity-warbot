@@ -23,20 +23,30 @@ public class ScoutMovement : Movement
         // Tant qu'elle est en vie on tire
         if (!connaissances.ContainsCustom(targetRigidbody))
         {
-            Vector3 t = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            Quaternion q = transform.rotation;
+
             transform.LookAt(targetRigidbody.transform);
 
-            m_Shooting.m_CurrentLaunchForce = 17f;
+            m_Shooting.m_CurrentLaunchForce = 22f;
             m_Shooting.Fire(false);
 
-            transform.LookAt(t);
+            yield return new WaitForSeconds(0.6f);
+            if (IsColored(targetRigidbody))
+                connaissances.connaissances.Add(new Connaissances.Connaissance(targetRigidbody));
 
-            connaissances.connaissances.Add(new Connaissances.Connaissance(targetRigidbody));
+            transform.rotation = q;
 
-            Debug.Log("### after add : " + connaissances.connaissances.Count);
-
-
-            yield return new WaitForSeconds(1f);
+            yield return null;
         }
+    }
+
+    public bool IsColored(Rigidbody rigidbody)
+    {
+        MeshRenderer[] renderers = rigidbody.GetComponentsInChildren<MeshRenderer>();
+
+        if (!renderers[0].material.color.Equals(Color.white))
+            return true;
+
+        return false;       
     }
 }

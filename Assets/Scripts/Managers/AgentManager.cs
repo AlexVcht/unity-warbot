@@ -36,10 +36,14 @@ public class AgentManager : MonoBehaviour
                 m_Scouts.m_SpawnPoint.rotation
             ) as GameObject;
 
+        Color color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+
         m_Tanks.m_PlayerNumber = 1;
+        m_Tanks.m_PlayerColor = color;
         m_Tanks.Setup();
 
         m_Scouts.m_PlayerNumber = 1;
+        m_Scouts.m_PlayerColor = color;
         m_Scouts.Setup();
     }
 
@@ -65,7 +69,7 @@ public class AgentManager : MonoBehaviour
                 x = Random.Range(-35.0f, 35.0f);
                 y = Random.Range(-35.0f, 35.0f);
                 d = Vector3.Distance(zero, new Vector3(x, 0, y));
-            } while(d < 8f);
+            } while(d < 15f);
             
             Vector3 position = new Vector3(x, 0, y);
             Quaternion quaternion = Quaternion.identity;
