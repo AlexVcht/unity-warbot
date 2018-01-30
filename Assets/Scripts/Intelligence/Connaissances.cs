@@ -24,16 +24,14 @@ public class Connaissances
 
     public void RemoveCustom(Rigidbody rigidbody)
     {
-        Connaissance cTmp = null;
-
         foreach (Connaissance c in connaissances)
         {
             if (c.getAgent() == rigidbody)
-                cTmp = c;
+            {
+                connaissances.Remove(c);
+                return;
+            }
         }
-
-        if (cTmp != null)
-            connaissances.Remove(cTmp);
     }
 
     public void Reset()

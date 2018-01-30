@@ -14,12 +14,12 @@ public interface ActionGenetique
 
 public abstract class Action : ActionGame, ActionGenetique
 {
-    protected long duree;
+    protected float duree;
 
     public static TankMovement tank = null;
     public static ScoutMovement scout = null;
     
-    public Action(long p_duree)
+    public Action(float p_duree)
     {
         if (tank == null || scout == null)
         {

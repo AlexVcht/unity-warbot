@@ -142,14 +142,14 @@ public abstract class Movement : MonoBehaviour
         }
     }
 
-    public IEnumerator moveToTarget(Transform toGo)
+    public IEnumerator moveToTarget(Rigidbody toGo)
     {
-        m_Rigidbody.transform.LookAt(toGo);
+        m_Rigidbody.transform.LookAt(toGo.transform);
 
         Vector3 movement = new Vector3();
 
         // On le met a la bonne distance
-        while ((m_Rigidbody.transform.position - toGo.position).magnitude > 10f)
+        while ((m_Rigidbody.transform.position - toGo.position).magnitude > 10f && connaissances.ContainsCustom(toGo))
         {
             movement = transform.forward * m_MovementInputValue * m_Speed * Time.deltaTime;
             m_Rigidbody.MovePosition(m_Rigidbody.position + movement);

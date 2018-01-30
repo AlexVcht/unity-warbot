@@ -14,6 +14,9 @@ public class TankMovement : Movement
 
     public override IEnumerator DestroyIt(Rigidbody targetRigodbody)
     {
+        float speedTmp = m_Speed;
+        m_Speed = 0;
+
         transform.LookAt(targetRigodbody.transform);
 
         // Tant qu'elle est en vie on tire
@@ -26,8 +29,10 @@ public class TankMovement : Movement
             yield return new WaitForSeconds(1f);
         }
 
-        if (!targetRigodbody.gameObject.activeSelf && connaissances.ContainsCustom(targetRigodbody))
+        if (!targetRigodbody.gameObject.activeSelf)
             connaissances.RemoveCustom(targetRigodbody);
+
+        m_Speed = speedTmp;
     }
 
     public override IEnumerator PutInConnaissances(Rigidbody targetRigidbody)

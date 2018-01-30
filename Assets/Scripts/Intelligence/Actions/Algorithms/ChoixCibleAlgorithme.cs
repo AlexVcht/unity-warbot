@@ -3,7 +3,7 @@ using UnityEngine;
 
 public interface AlgoChoixCible
 {
-    Transform compare(Connaissances connaissances, Transform tank, float closest, float insertedWhen);
+    Rigidbody compare(Connaissances connaissances, Transform tank, float closest, float insertedWhen);
 }
 
 public class ChoixCibleAlgorithmes
@@ -24,13 +24,13 @@ public class ChoixCibleAlgorithmes
 
     public class Closest : AlgoChoixCible
     {
-        public Transform compare(Connaissances connaissances, Transform tank, float closest, float insertedWhen)
+        public Rigidbody compare(Connaissances connaissances, Transform tank, float closest, float insertedWhen)
         {
-            Transform closestPos = null;
+            Rigidbody closestPos = null;
             foreach (Connaissances.Connaissance con in connaissances.connaissances)
             {
                 if (closestPos == null || Vector3.Distance(con.getAgent().position, tank.position) < Vector3.Distance(closestPos.position, tank.position))
-                    closestPos = con.getAgent().transform;
+                    closestPos = con.getAgent();
             }
             return closestPos;
         }
@@ -43,13 +43,13 @@ public class ChoixCibleAlgorithmes
 
     public class Furthest : AlgoChoixCible
     {
-        public Transform compare(Connaissances connaissances, Transform tank, float closest, float insertedWhen)
+        public Rigidbody compare(Connaissances connaissances, Transform tank, float closest, float insertedWhen)
         {
-            Transform closestPos = null;
+            Rigidbody closestPos = null;
             foreach (Connaissances.Connaissance con in connaissances.connaissances)
             {
                 if (closestPos == null || Vector3.Distance(con.getAgent().position, tank.position) > Vector3.Distance(closestPos.position, tank.position))
-                    closestPos = con.getAgent().transform;
+                    closestPos = con.getAgent();
             }
             return closestPos;
         }
@@ -61,7 +61,7 @@ public class ChoixCibleAlgorithmes
 
     public class Percentage : AlgoChoixCible
     {
-        public Transform compare(Connaissances connaissances, Transform tank, float closest, float insertedWhen)
+        public Rigidbody compare(Connaissances connaissances, Transform tank, float closest, float insertedWhen)
         {
             //TODO
             return null;

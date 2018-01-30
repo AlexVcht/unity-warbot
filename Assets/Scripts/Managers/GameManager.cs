@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
         agentManager.InitAgents(m_NumTargets);
 
         stopWatch = Stopwatch.StartNew();
-        genetique = new Genetique(10, 100, 0.4f);
+        genetique = new Genetique(20, 100, 0.1f);
         connaissances = new Connaissances();
 
         SetScoreUI();

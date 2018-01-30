@@ -21,7 +21,7 @@ public class MoveToTarget : Action
 
     public override IEnumerator execute(Connaissances connaissances)
     {
-        Transform t = choixCible.compare(connaissances, tank.transform, closest, insertedWhen);
+        Rigidbody t = choixCible.compare(connaissances, tank.transform, closest, insertedWhen);
         if (t)
         {
             Debug.Log((tank == null ? "Scout" : "Tank") + " MoveToTarget : " + duree);

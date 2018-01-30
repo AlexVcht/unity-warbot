@@ -5,7 +5,7 @@ public abstract class BougerRandom : Action
 {
     protected Quaternion direction;
 
-    public BougerRandom(long p_duree, Quaternion p_direction) : base(p_duree) {
+    public BougerRandom(float p_duree, Quaternion p_direction) : base(p_duree) {
         direction = p_direction;
     }
 
@@ -35,9 +35,9 @@ public abstract class BougerRandom : Action
         direction = p_direction;
     }
 
-    public static int getRandomDuree()
+    public static float getRandomDuree()
     {
-        return Random.Range(1, 5);
+        return Random.Range(0.5f, 3f);
     }
 
     public static Quaternion getRandomDirection()

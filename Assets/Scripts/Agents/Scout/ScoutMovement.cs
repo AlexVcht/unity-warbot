@@ -23,6 +23,9 @@ public class ScoutMovement : Movement
         // Tant qu'elle est en vie on tire
         if (!connaissances.ContainsCustom(targetRigidbody))
         {
+            float speedTmp = m_Speed;
+            m_Speed = 0;
+
             Quaternion q = transform.rotation;
 
             transform.LookAt(targetRigidbody.transform);
@@ -30,11 +33,13 @@ public class ScoutMovement : Movement
             m_Shooting.m_CurrentLaunchForce = 22f;
             m_Shooting.Fire(false);
 
-            yield return new WaitForSeconds(0.6f);
+            yield return new WaitForSeconds(0.8f);
             if (IsColored(targetRigidbody))
                 connaissances.connaissances.Add(new Connaissances.Connaissance(targetRigidbody));
 
             transform.rotation = q;
+
+            m_Speed = speedTmp;
 
             yield return null;
         }

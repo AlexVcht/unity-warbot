@@ -4,7 +4,7 @@ using UnityEngine;
 public class BougerRandomTank : BougerRandom
 {
 
-    public BougerRandomTank(long p_duree, Quaternion p_direction) : base(p_duree, p_direction) {
+    public BougerRandomTank(float p_duree, Quaternion p_direction) : base(p_duree, p_direction) {
     }
 
     public static BougerRandomTank createRandom()
