@@ -92,9 +92,6 @@ public class GameManager : MonoBehaviour
 
             // Le score c'est un long contenant les ms du temps de jeu
             // Récupérer le score et le mettre dans squad.setScore(score)
-
-            UnityEngine.Debug.Log("FIN DE SQUAD : ");
-            genetique.SaveState("SaveState");
         }
 
         UnityEngine.Debug.Log("FIN DE GENERATION : ");
