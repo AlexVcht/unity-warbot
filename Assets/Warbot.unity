@@ -982,7 +982,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Awesome 3d warbot
+  m_Text: Awesome 3D Warbot
 --- !u!222 &1174213239
 CanvasRenderer:
   m_ObjectHideFlags: 0
