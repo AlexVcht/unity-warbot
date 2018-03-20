@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
 
         stopWatch = Stopwatch.StartNew();
         genetique = new Genetique(20, 100, 0.1f);
+		genetique.LoadState("SaveState");
         connaissances = new Connaissances();
 
         SetScoreUI();
@@ -75,6 +76,7 @@ public class GameManager : MonoBehaviour
         m_GenerationNumber++;
         m_RoundNumber = 0;
         genetique.makeNextGeneration();
+		
 
         while (genetique.hasNext())
         {
@@ -92,10 +94,11 @@ public class GameManager : MonoBehaviour
             // Récupérer le score et le mettre dans squad.setScore(score)
 
             UnityEngine.Debug.Log("FIN DE SQUAD : ");
+            genetique.SaveState("SaveState");
         }
 
         UnityEngine.Debug.Log("FIN DE GENERATION : ");
-
+        genetique.SaveState("SaveState");
         if (false)
         {
             // Peut etre la fonction reset ici meme

@@ -1,11 +1,18 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+
 
 public interface AlgoChoixCible
 {
     Rigidbody compare(Connaissances connaissances, Transform tank, float closest, float insertedWhen);
 }
 
+[System.Serializable]
 public class ChoixCibleAlgorithmes
 {
     public static AlgoChoixCible getRandomAlgo()
@@ -22,6 +29,7 @@ public class ChoixCibleAlgorithmes
         throw new NotImplementedException();
     }
 
+	[System.Serializable]
     public class Closest : AlgoChoixCible
     {
         public Rigidbody compare(Connaissances connaissances, Transform tank, float closest, float insertedWhen)
@@ -41,6 +49,7 @@ public class ChoixCibleAlgorithmes
         }
     }
 
+	[System.Serializable]
     public class Furthest : AlgoChoixCible
     {
         public Rigidbody compare(Connaissances connaissances, Transform tank, float closest, float insertedWhen)
@@ -59,6 +68,7 @@ public class ChoixCibleAlgorithmes
         }
     }
 
+	[System.Serializable]
     public class Percentage : AlgoChoixCible
     {
         public Rigidbody compare(Connaissances connaissances, Transform tank, float closest, float insertedWhen)

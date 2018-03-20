@@ -1,6 +1,14 @@
 ﻿using System;
 using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
+[System.Serializable]
 public class Genetique
 {
     private int tailleADN;
@@ -61,6 +69,8 @@ public class Genetique
         }
 
         cursor = 0;
+
+
     }
 
     public Squad nextSquad()
@@ -88,4 +98,39 @@ public class Genetique
             }
         }
     }
+				
+	public void SaveState(string fileName)
+	{
+		UnityEngine.Debug.Log("saving SaveState :  Generation " + this.gen + " at Squad " + (this.cursor+1) + "/" + this.population.Length);
+		BinaryFormatter bf = new BinaryFormatter();
+		FileStream file = File.Create (Application.persistentDataPath + "/"+ fileName +".gd");
+		bf.Serialize(file, this);
+		file.Close();
+		UnityEngine.Debug.Log("Saved SaveState : "+ Application.persistentDataPath + "/" + fileName + ".gd");
+	}
+		
+	public void LoadState(string fileName)
+	{
+        UnityEngine.Debug.Log("Loading SaveState : " + Application.persistentDataPath + "/" + fileName + ".gd");
+        if (File.Exists(Application.persistentDataPath + "/" + fileName + ".gd")) {
+            Genetique objectOut = new Genetique(20, 100, 0.1f);
+            BinaryFormatter bf = new BinaryFormatter();
+			FileStream file = File.Open(Application.persistentDataPath + "/" + fileName + ".gd", FileMode.Open);
+			objectOut = (Genetique)bf.Deserialize(file);
+			file.Close();
+            //replacement
+            this.tailleADN = objectOut.tailleADN;
+            this.indiceMutation = objectOut.indiceMutation;
+            this.taillePopulation = objectOut.taillePopulation;
+            this.population = objectOut.population;
+            this.bestIndices = objectOut.bestIndices;
+            this.cursor = objectOut.cursor;
+            this.gen = objectOut.gen;
+            UnityEngine.Debug.Log("Loaded SaveState : Generation " + this.gen + " at Squad " + (this.cursor+1) +"/"+ this.population.Length);
+        } else
+        {
+            UnityEngine.Debug.Log("SaveState not found.");
+        }
+
+	}
 }
