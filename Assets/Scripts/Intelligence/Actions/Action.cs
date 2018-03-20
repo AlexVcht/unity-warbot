@@ -1,6 +1,12 @@
 ﻿using System;
 using System.Collections;
 using Random = UnityEngine.Random;
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+
 
 public interface ActionGame
 {
@@ -12,6 +18,7 @@ public interface ActionGenetique
     void mutate(float iMutation);
 }
 
+[System.Serializable]
 public abstract class Action : ActionGame, ActionGenetique
 {
     protected float duree;

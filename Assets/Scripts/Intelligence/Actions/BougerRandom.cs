@@ -1,9 +1,15 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
+[System.Serializable]
 public abstract class BougerRandom : Action
 {
-    protected Quaternion direction;
+    protected SerializableQuaternion direction;
 
     public BougerRandom(float p_duree, Quaternion p_direction) : base(p_duree) {
         direction = p_direction;
