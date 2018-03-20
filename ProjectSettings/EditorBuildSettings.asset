@@ -8,3 +8,9 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Menu.unity
+    guid: f4942eb2e855ddd438485594bb988f86
+  - enabled: 1
+    path: Assets/Warbot.unity
+    guid: f61b029b136bf6c4297b5d6307158754
