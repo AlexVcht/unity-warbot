@@ -67,12 +67,8 @@ Une fois la génération d'après créée nous recommencons à faire jouer toute
 ## Sauvegarde et chargement de la partie
 L'apprentissage des tanks peut être long et nous offrons donc la possibilité de sauvegarder la simulation pour la recharger au prochain lancement. A la fin de chaque génération nous sauvegardons donc les données de la simulation (ADN des équipes, placement des cibles, etc). Un bouton Load est ensuite disponible sur le menu du jeu pour charger cette sauvegarde.
 
-## Ouverture sur unity
+## Ouverture et lancement sur unity
 - Lancer unity
 - Importer le projet
-- Dans la fenêtre "Project" double clic sur "Warbot.unity"
-
-## Lancement sur unity 
-- Dans le game manager préciser
--- le nombre de round à gagner : "Num Rounds To Win"
--- le nombre de cible générés aléatoirement : "Num Targets"
+- Dans la fenêtre "Project" double clic sur "Menu.unity"
+- Lancer la scène
