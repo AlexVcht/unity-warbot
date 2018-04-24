@@ -1,4 +1,5 @@
 # Warbot
+Bot 3D réalisé avec unity intégrant un algorithme génétique
 
 ## Principe du jeu
 C'est un tournoi d'équipes de tanks où le but est de toucher toutes les cibles de la carte le plus rapidement possible. A cela nous avons appliqué un algorithme génétique pour l'apprentissage de l'environnement.
